@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>oxd-go demo</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+
+</head>
+<body>
+        <div class="jumbotron"><h1>Gluu oxd GO Application</h1></div>
+        <h2>User Info</h2>
+        <div class="col-md-12" align="right">
+                
+            <p><a href="/logoutUrl" id="btnLogout" name="btnLogout" class="btn-link" value="Logout">Logout</a></p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <form name="gluu-form" action="" method="get">
+                    <div class="form-group">
+                        <label for="user_name">Name</label>
+                        <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Name" value="{{.Name}}" disabled="disabled" />
+                    </div>
+                    <div class="form-group">
+                        <label for="user_mail">Email</label>
+                        <input type="email" class="form-control" id="user_mail" name="user_mail" placeholder="Email" value="{{.Email}}" disabled="disabled" />
+                    </div>
+        
+                </form>
+            </div>
+        </div>
+</body>        
+

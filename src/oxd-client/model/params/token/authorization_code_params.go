@@ -12,6 +12,7 @@ type AuthorizationCodeRequestParams struct {
 	AcrValues []string `json:"acr_values,omitempty"`
 	Nonce string `json:"nonce,omitempty"`
 	State string `json:"state"`
+    
 }
 
 type AuthorizationCodeResponseParams struct {

@@ -1,17 +1,35 @@
 title = "config"
-host = "oxd-server.com:8080"
-key = "/home/kepuss/key.pem"
-cert = "/home/kepuss/cert.pem"
+host = "127.0.0.1"
+key = "src/home/kepuss/key.pem"
+cert = "src/home/kepuss/cert.pem"
 
 username = "test_user"
 password = "test_user_password"
 
+path="/scim"
+
+[[condition]]
+httpMethods=["GET"]
+scopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
+ticketScopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
+
+[[condition]]
+httpMethods=["PUT", "POST"]
+scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/add"]
+ticketScopes=["http://photoz.example.com/dev/actions/add"]
+
+[[condition]]
+httpMethods=["DELETE"]
+scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/remove"]
+ticketScopes=["http://photoz.example.com/dev/actions/remove"]
+
+
 loglevel = "debug"
 
 [registerSiteRequestParams]
-opHost = "https://ce-dev2.gluu.org"
-authorizationRedirectUri = "https://10.0.0.250:8080/redirect"
-postLogoutRedirectUri = "https://10.0.0.250:8080/logout"
+opHost = "https://iam310.centroxy.com"
+authorizationRedirectUri = "https://client.example.com:8080/redirect"
+postLogoutRedirectUri = "https://client.example.com:8080/"
 
 redirectUris = []
 responseTypes = ["code"]
@@ -25,20 +43,26 @@ clientRequestUris  = []
 clientLogoutUri  = []
 clientSectorIdentifierUri = ""
 
-scope = ["openid", "profile"]
+scope = ["openid", "profile", "email", "uma_protection", "uma_authorization"]
 uiLocales  = []
 claimsLocales  = []
 acrValues = []
-grantType = ["authorization_code"]
+grantType = ["authorization_code", "client_credentials", "uma_ticket"]
 contacts = ["example@example.com"]
 
 
 [authorizationCodeFlowRequestParams]
 clientId = "@!BB85.C095.8C1E.0573!0001!F554.249C!0008!213A.710A"
+
+
 clientSecret = ""
 userId =""
 userSecret =""
 scope = "openid"
 acr = ""
 nonce = "15d3ltbdd65b1o9at1q5gjq3ge"
-authorizationRedirectUri = "https://10.0.0.250:8080/redirect"
+authorizationRedirectUri = "https://localhost:8080/redirect"
+
+
+
+

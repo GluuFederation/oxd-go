@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>oxd-go demo</title>
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-theme.css" />
+    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+    <style>
+            #bod_div {
+            outline-color: #2eea21;
+            outline-width: 1px;
+            outline-style: solid;
+            background-color: #effdff;
+            padding: 10px;
+            margin-left: -10px;
+            margin-right: -13px;
+            margin-top: 50px;
+        }
+        </style>
+  
+<script>
+   
+      $(document).ready(function (e) {
+        $("input[name='conn_type_radio']").change(function () {
+            if ($(this).val() == "local") {
+
+                $("#conn_label").text("oxd port:");
+                $("#conn_type").attr("placeholder", "8099");
+            }
+            else {
+                $("#conn_label").text("oxd web address:");
+                $("#conn_type").attr("placeholder", "ex:https://oxd.oxdweb.com:8080");
+            }
+        });
+
+            $.getJSON("/loadoxdsettings", function (response) {
+             
+                
+                jQuery("#clientName").val(response.ClientName);
+                jQuery("#ophostId").val(response.Ophost);
+                jQuery("#oxdId").val(response.Oxdid);
+                jQuery("#redirecturlid").val(response.RedirectUri);
+                
+                jQuery("#logouturi").val(response.LogoutUri);
+                jQuery("#clientid").val(response.Clientid);
+                jQuery("#clientsecret").val(response.Clientsecret);
+
+
+                if (!response.Oxdid) {
+                    $("#btnRegister").prop('disabled', false);
+                    $("#btnUpdate").prop('disabled', "disabled");
+                    $("#btnEdit").prop('disabled', "disabled");
+                    $("#clientArea").css("display", "none");
+                    Enable(false);
+                }
+                else {
+                    $("#btnRegister").prop('disabled', "disabled");
+                    $("#btnUpdate").prop('disabled', "disabled");
+                    $("#btnEdit").prop('disabled', false);
+                    $("#clientArea").css("display", "block");
+                    Enable('disabled');
+                }
+
+                var application_type_val = response.ConnectionType;
+                
+                if (application_type_val == "web") {
+                    jQuery("#conn_type").val(response.Httpresturl);
+                    $("#conn_label").text("oxd web address:");
+                    $("#conn_type").attr("placeholder", "ex:https://oxd.oxdweb.com:8080");
+                }
+                else {
+                    jQuery("#conn_type").val(response.OxdPort);
+                    $("#conn_label").text("oxd port:");
+                    $("#conn_type").attr("placeholder", "8099");
+                }
+
+                if (application_type_val != '') {
+                    $("input[name=conn_type_radio][value=" + application_type_val + "]").prop('checked', true);
+                }
+                
+
+            });
+
+      
+   
+    $('#btnRegister').click(function () {
+        //var ophostId = jQuery("#ophostId");
+        var ophostId=$("#ophostId").val();
+        //alert(ophostId);
+            var redirectUrl = $("#redirecturlid").val();
+            var PostLogoutRedirectUrl = $("#logouturi").val();
+            var OxdPort = $("#conn_type").val();
+            var clientid = $("#clientid").val();
+            var clientsecret = $("#clientsecret").val();
+            var client_name = $("#clientName").val();
+            var connectiontype = $("input[name=conn_type_radio]:checked");
+            var httpresturl = "";
+            
+            if (connectiontype.val() == 'web')
+            {
+                httpresturl = jQuery("#conn_type").val();
+            }
+
+            var dataString="OphostId="+ophostId+"&OxdPort="+OxdPort+"&RedirectUrl="+redirectUrl+"&PostLogoutRedirectUrl="+PostLogoutRedirectUrl+"&Clientid="+clientid+"&Clientsecret="+clientsecret+"&Client_name="+client_name+"&Connectiontype="+connectiontype.val()+"&Httpresturl="+httpresturl+"&insert=";
+   $.ajax({
+    type: 'post',    
+    url: '/register',
+    data: dataString,
+    crossDomain: true,
+    contentType: 'application/x-www-form-urlencoded',
+    cache: false,
+    success : function(response) {
+    //alert(response)
+    var obj = $.parseJSON(response);
+  
+    jQuery("#oxdId").val(obj.oxd_id);
+                    jQuery("#clientid").val(obj.client_id);
+                    jQuery("#clientsecret").val(obj.client_secret);
+
+
+                    Enable('disabled');
+                    $("#btnRegister").prop('disabled', "disabled");
+                    $("#btnUpdate").prop('disabled', "disabled");
+                    $("#clientArea").css("display", "block");
+                    $("#btnEdit").prop('disabled', false);
+    },
+    
+    });
+    });
+    $('#btnUpdate').click(function () {
+        
+        var ophostId=$("#ophostId").val();
+        
+            var redirectUrl = $("#redirecturlid").val();
+            var PostLogoutRedirectUrl = $("#logouturi").val();
+            var OxdPort = $("#conn_type").val();
+            var OxdID = $("#oxdId").val();
+            var clientid = $("#clientid").val();
+            var clientsecret = $("#clientsecret").val();
+            var client_name = $("#clientName").val();
+            var connectiontype = $("input[name=conn_type_radio]:checked");
+            var httpresturl = "";
+            
+            if (connectiontype.val() == 'web')
+            {
+                httpresturl = jQuery("#conn_type").val();
+            }
+
+            var dataString="OphostId="+ophostId+"&RedirectUrl="+redirectUrl+"&PostLogoutRedirectUrl="+PostLogoutRedirectUrl+"&Clientid="+clientid+"&Clientsecret="+clientsecret+"&Client_name="+client_name+"&Connectiontype="+connectiontype.val()+"&Httpresturl="+httpresturl+"&OxdID="+OxdID+"&insert=";
+    $.ajax({
+    type: 'post',    
+    url: '/update',
+    data: dataString,
+    crossDomain: true,
+    contentType: 'application/x-www-form-urlencoded',
+    cache: false,
+    success : function(response) {
+    alert(response)
+    var obj = $.parseJSON(response);
+    alert(obj.status);
+    Enable('disabled');
+    $("#btnRegister").prop('disabled', "disabled");
+    $("#btnUpdate").prop('disabled', "disabled");
+    $("#btnEdit").prop('disabled', false);
+    $("#clientArea").css("display", "block");
+    },
+    
+    });
+    });
+
+    jQuery('#btnEdit').click(function (event) {
+            //event.preventDefault();
+
+            Enable(false);
+            $("#btnUpdate").prop('disabled', false);
+            $("#btnEdit").prop('disabled', "disabled");
+            
+
+        });
+    $('#btnDelete').click(function () {
+
+    $("#clientArea").css("display", "none");
+            $("form")[0].reset();
+            Enable(false);
+            $("#btnRegister").prop('disabled', false);
+            $("#btnEdit").prop('disabled', "disabled");
+    $.ajax({
+    type: 'post',    
+    url: '/deletesettings',
+    crossDomain: true,
+    contentType: 'application/x-www-form-urlencoded',
+    cache: false,
+    success : function(response) {
+    alert("Successfully Deleted")
+    
+    },
+    
+    });
+    });
+
+    function Enable(enalbed) {
+            $("#clientid").prop('disabled', enalbed);
+            $("#clientsecret").prop('disabled', enalbed);
+            $("#ophostId").prop('disabled', enalbed);
+            $("#redirecturlid").prop('disabled', enalbed);
+            $("#logouturi").prop('disabled', enalbed);
+            $("#conn_type").prop('disabled', enalbed);
+            $("#oxdId").prop('disabled', enalbed);
+            $("#clientName").prop('disabled', enalbed);
+        }
+    });
+    </script>`
+
+        
+</head>
+<body>
+<div class="container body-content">
+        
+                <div id="bod_div" class="col-md-12">
+                        <form name="Form1" action=" " method="post" class="form-horizontal">
+                            <h3>Register</h3><br />
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="text-align: left">URI of the OpenID Connect Provider:</label>
+                                <div class="col-sm-8">
+                                    <input type="url" class="form-control col-sm-8" id="ophostId" name="ophostId" placeholder="ex: https://gluu.idphost.com" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="text-align: left">Authorization Redirect URI:</label>
+                                <div class="col-sm-8">
+                                    <input type="url" class="form-control col-sm-8" id="redirecturlid" placeholder="ex: https://client.example.com" >
+                                </div>
+                            </div>
+        
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="text-align: left">Post logout URI:</label>
+                                <div class="col-sm-8">
+                                    <input type="url" class="form-control col-sm-8" id="logouturi" placeholder="ex: https://client.example.com/logout" >
+                                </div>
+                            </div>
+        
+        
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="text-align: left">oxd Connection Type:</label>
+                                <div id="RadioDiv" class="ip_box col-sm-8">
+                                    <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="local" checked="checked"> Local</label>
+                                    <label class="radio-inline"> <input type="radio" name="conn_type_radio" id="conn_type_radio" value="web"> web</label>
+                                </div>
+                                <div id="conn">
+                                    <label class="control-label col-sm-3" id="conn_label" style="text-align: left"></label>
+                                    <div class="col-sm-8" id="conn_ip">
+                                        <input type="text" class="form-control col-sm-8" id="conn_type" style=" -moz-box-shadow inset 0 0 20px #000000; " >
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="row">
+                                <label class="control-label col-sm-3" id="clnt3" style="text-align: left">Client Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control col-sm-8" id="clientName" name="clientName" style="margin-bottom:20px;" placeholder="Client name" >
+        
+                                </div>
+                            </div>
+        
+                            <div id="clientArea" style="display:none;">
+                                <div class="row">
+                                    <label class="control-label col-sm-3" id="clientIdLabel" style="text-align: left">Client Id:</label>
+                                    <div class="col-sm-8" id="set_id_secret values">
+                                        <input type="text" class="form-control col-sm-8" id="clientid" name="clientid" style="margin-bottom:20px;" placeholder="Client Id from OpenID Connect Provider" >
+        
+                                    </div>
+                                    <label class="control-label col-sm-3" id="clientSecretLabel" style="text-align: left;margin-bottom:20px;">Client Secret:</label>
+                                    <div class="col-sm-8" id="set_id_secret values">
+                                        <input type="text" class="form-control col-sm-8" id="clientsecret" name="clientsecret" style="margin-bottom:20px;" placeholder="Client Secret from OpenID Connect Provider" >
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="row">
+                              
+                               
+                                <button type="button" class="btn btn-success" value="Register" name="btnRegister" id="btnRegister"  style="text-align: left;">Register</button>
+                                <button type="button" class="btn  btn-primary" value="Update" id="btnUpdate"  style="text-align: left">Update</button>
+                                <button type="button" class="btn  btn-primary" value="Edit" id="btnEdit" style="text-align: left">Edit</button>
+                                <button type="button" class="btn  btn-danger" value="Delete" id="btnDelete" style="text-align: left">Delete</button>
+                                
+        
+                            </div>
+        
+                            <div class="form-group">
+        
+                                <label class="control-label col-sm-3" style="text-align: left">oxd id:</label>
+                                <input type="text" class="form-control col-sm-8" id="oxdId" name="oxdId" style="margin-bottom:20px;background-color:transparent;border-color:transparent;" >
+        
+        
+                            </div>
+        
+        
+                        </form>
+        
+                </div>
+        
+        </div>
+      
+</body>
+</html>

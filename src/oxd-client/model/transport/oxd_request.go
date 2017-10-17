@@ -6,6 +6,7 @@
 package transport
 
 import (
+	//"fmt"
 	"oxd-client/constants"
 	"encoding/json"
 	"oxd-client/utils"
@@ -21,6 +22,7 @@ type OxdRequest struct {
 }
 
 func (r OxdRequest) ToOxdJSON() []byte{
+	//fmt.Println(r)
 	value , err := json.Marshal(r)
 	utils.CheckError("transport.OxdRequest","JSON marshalling error",err)
 	return append(getLength(value),value...)

@@ -11,10 +11,28 @@ type RsCheckAccessRequestParams struct {
 	Rpt string `json:"rpt"`
 	Path string `json:"path"`
 	HttpMethod string `json:"http_method"`
+	ProtectionAccessToken string `json:"protection_access_token"`
 }
 
 type RsCheckAccessResponseParams struct {
+	
+	Status string `json:"status"` 
+	
+	
 	Access string `json:"access"`
 	WwwAuthenticateHeader string `json:"www-authenticate_header"`
 	Ticket string `json:"ticket"`
+	Error string `json:"error"`
+	ErrorDescription string `json:"error_description"`
+
+
 }
+
+// type RsCheckAccessResponseParamsData struct {
+ 
+// 	Access string `json:"access"`
+// 	WwwAuthenticateHeader string `json:"www-authenticate_header"`
+// 	Ticket string `json:"ticket"`
+// 	Error string `json:"error"`
+// 	ErrorDescription string `json:"error_description"`
+// }

@@ -6,6 +6,7 @@
 package client
 
 import (
+	
 	"oxd-client/model/transport"
 	socket "oxd-client/transport"
 	"oxd-client/constants"
@@ -19,6 +20,7 @@ func Send(request transport.OxdRequest, address string, response *transport.OxdR
 }
 
 func BuildOxdRequest(command constants.CommandType, params transport.Param) transport.OxdRequest {
+	
 	return transport.OxdRequest{command,params}
 }
 

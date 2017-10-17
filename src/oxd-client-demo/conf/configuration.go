@@ -7,6 +7,7 @@ package conf
 
 import "oxd-client/model/params/registration"
 import param "oxd-client/model/params/url"
+import "oxd-client/model/params/uma/protect"
 
 
 type Configuration struct{
@@ -16,6 +17,8 @@ type Configuration struct{
 	Username string `toml:"username"`
 	Password string `toml:"password"`
 	Loglevel string `toml:"loglevel"`
+	Path string `toml:"path"`
+	Condition []protect.Condition `toml:"condition"`
 
 
 	RegisterSiteRequestParams model.RegisterSiteRequestParams `toml:"registerSiteRequestParams"`

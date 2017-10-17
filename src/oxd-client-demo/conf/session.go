@@ -10,5 +10,9 @@ type SessionVars struct {
 	State string
 	Code string
 	AccessToken string
+	RefreshToken string
+	UMATicket string
 	IdToken string
+	Name string
+	Email string
 }

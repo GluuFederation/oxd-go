@@ -15,16 +15,14 @@ import (
 	"oxd-client/model/params/url"
 )
 
-func LogoutUrlPageSite(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session conf.SessionVars) {
+func LogoutUrlPageSite(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session conf.SessionVars, accesstoken string,globalvariables conf.GlobalVars) {
 	var oxdResponse transport.OxdResponse
-
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_LOGOUT_URI,
-			model.LogoutUrlRequestParams{session.OxdId,session.IdToken,"",session.State,""}),
+			model.LogoutUrlRequestParams{globalvariables.Oxdid,accesstoken,session.IdToken,"",session.State,""}),
 		&oxdResponse,
-		configuration.Host)
+		globalvariables.Host)
 	var response model.LogoutUrlResponseParams
 	oxdResponse.GetParams(&response)
-
 	http.Redirect(w, r, response.Uri, http.StatusPermanentRedirect)
 }

@@ -19,6 +19,7 @@ import (
 func RegisterSitePage(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session *conf.SessionVars) {
 	var oxdResponse transport.OxdResponse
 
+
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.REGISTER_SITE,configuration.RegisterSiteRequestParams),
 		&oxdResponse,
