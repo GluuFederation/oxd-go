@@ -12,7 +12,7 @@ import (
 	"oxd-client/client"
 	"oxd-client/constants"
 	"oxd-client/model/transport"
-	"oxd-client/model/oxd_config_json"
+	"oxd-client-demo/oxd_config_json"
 	"oxd-client/model/params/registration"
 	//"oxd-client-demo/utils"
 )
@@ -30,9 +30,9 @@ func UpdateSitePage(w http.ResponseWriter, r *http.Request, configuration conf.C
 	request.ClientName = r.FormValue("Client_name")
 	request.ClientSecret = r.FormValue("clientsecret")
 	request.AuthorizationRedirectUri = r.FormValue("RedirectUrl")
-	request.Scope = configuration.RegisterSiteRequestParams.Scope
+	request.Scope = globalvariables.Scope
 	request.PostLogoutRedirectUri = r.FormValue("PostLogoutRedirectUrl")
-	request.GrantType = configuration.RegisterSiteRequestParams.GrantType
+	request.GrantType = globalvariables.GrantType
 	
     page.CallOxdServer(
 		client.BuildOxdRequest(constants.UPDATE_SITE,request),

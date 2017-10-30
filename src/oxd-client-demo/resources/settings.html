@@ -59,7 +59,7 @@
                 else {
                     $("#btnRegister").prop('disabled', "disabled");
                     $("#btnUpdate").prop('disabled', "disabled");
-                    $("#btnEdit").prop('disabled', false);
+                   $("#btnEdit").prop('disabled', false);
                     $("#clientArea").css("display", "block");
                     Enable('disabled');
                 }
@@ -84,7 +84,33 @@
 
             });
 
-      
+            jQuery('#ophostId').change(function (event) {
+            var ophostId = $("#ophostId").val();
+           
+            var dataString="OphostId="+ophostId;
+            $.ajax({
+            type: 'post',    
+            url: '/checkregistration',
+             data: dataString,
+             crossDomain: true,
+             contentType: 'application/x-www-form-urlencoded',
+            cache: false,
+            success : function(response) {
+        
+           var obj = $.parseJSON(response);
+
+           if (obj.response == "true") {
+                    $("#clientArea").css("display", "none");
+                }
+                else {
+                    $("#clientArea").css("display", "block");
+                }
+   
+           },
+    
+         });
+ 
+        });
    
     $('#btnRegister').click(function () {
         //var ophostId = jQuery("#ophostId");
@@ -130,7 +156,7 @@
     
     });
     });
-    $('#btnUpdate').click(function () {
+     $('#btnUpdate').click(function () {
         
         var ophostId=$("#ophostId").val();
         
@@ -158,9 +184,9 @@
     contentType: 'application/x-www-form-urlencoded',
     cache: false,
     success : function(response) {
-    alert(response)
-    var obj = $.parseJSON(response);
-    alert(obj.status);
+    alert("ok")
+    // var obj = $.parseJSON(response);
+    // alert(obj.status);
     Enable('disabled');
     $("#btnRegister").prop('disabled', "disabled");
     $("#btnUpdate").prop('disabled', "disabled");
@@ -265,7 +291,7 @@
                                 </div>
                             </div>
         
-                            <div id="clientArea" style="display:none;">
+                            <div id="clientArea" style="display:none" >
                                 <div class="row">
                                     <label class="control-label col-sm-3" id="clientIdLabel" style="text-align: left">Client Id:</label>
                                     <div class="col-sm-8" id="set_id_secret values">

@@ -28,11 +28,4 @@ type RsCheckAccessResponseParams struct {
 
 }
 
-// type RsCheckAccessResponseParamsData struct {
- 
-// 	Access string `json:"access"`
-// 	WwwAuthenticateHeader string `json:"www-authenticate_header"`
-// 	Ticket string `json:"ticket"`
-// 	Error string `json:"error"`
-// 	ErrorDescription string `json:"error_description"`
-// }
+

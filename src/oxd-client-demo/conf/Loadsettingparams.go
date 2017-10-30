@@ -16,7 +16,7 @@ type GlobalVars struct {
 	 Oxdid string
 	 OxdHost string
 	 Scope []string
-	 Grant_types []string  
+	 GrantType []string  
 	 Dynamic_registration bool 
 	
 }

@@ -8,27 +8,28 @@ import (
 	"oxd-client/client"
     "oxd-client/constants"
 	"oxd-client/model/transport"
-	"oxd-client/model/oxd_config_json"
+	"oxd-client-demo/oxd_config_json"
 	"oxd-client-demo/service"
 	"oxd-client-demo/utils"
 )
 
   
-func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session *conf.SessionVars )   {
+func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session *conf.SessionVars, globalvariables conf.GlobalVars)   {
 	
 	 
 	var oxdResponse transport.OxdResponse
 	var request model.SetupClientRequestParams
-
+	
+	request.Scope = globalvariables.Scope
 	request.OpHost = r.FormValue("OphostId")
-	request.ClientId = r.FormValue("clientid")
+	request.ClientId = r.FormValue("Clientid")
+	request.GrantType = globalvariables.GrantType
 	request.ClientName = r.FormValue("Client_name")
-	request.ClientSecret = r.FormValue("clientsecret")
+	request.ClientSecret = r.FormValue("Clientsecret")
 	request.AuthorizationRedirectUri = r.FormValue("RedirectUrl")
-	request.Scope = configuration.RegisterSiteRequestParams.Scope
 	request.PostLogoutRedirectUri = r.FormValue("PostLogoutRedirectUrl")
 	OxdHost := fmt.Sprint(configuration.Host+":"+r.FormValue("OxdPort"))
-	request.GrantType = configuration.RegisterSiteRequestParams.GrantType
+	
 	
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.SETUP_CLIENT,request),
@@ -45,7 +46,7 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.
 	
 	savesettings.OxdId = response.OxdId
 	savesettings.ClientId = response.ClientId
-	savesettings.OxdHost = configuration.Host
+	savesettings.OxdHost = request.OpHost
 	savesettings.ClientName = request.ClientName
 	savesettings.OxdPort = r.FormValue("OxdPort")
 	savesettings.ClientSecret = response.ClientSecret

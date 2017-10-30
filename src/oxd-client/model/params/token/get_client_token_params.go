@@ -11,34 +11,15 @@ type GetClientTokenRequestParams struct {
 	Scope string `json:"scope,omitempty"`
 	
 }
- /* type GetClientTokenResponseParams struct {
-	Status string `json:"status"`
-Data struct {
-	AccessToken  string `json:"access_token"`
-	ExpiresIn    int    `json:"expires_in"`
-	RefreshToken string `json:"refresh_token"`
-	Scope        string `json:"scope"`
-} `json:"data"`
 
-}  */
-
-//  type GetClientTokenResponseParamsData struct {
-	
-// 		Scope string `json:"scope"`
-//     	AccessToken string `json:"access_token"`
-//     	ExpiresIn int `json:"expires_in"`
-// 		RefreshToken string `json:"refresh_token"`
-//  	}
 
 type GetClientTokenResponseParams struct {
-	//Status string `json:"status"`
+	
 	Scope string `json:"scope"`
 	AccessToken string `json:"access_token"`
 	ExpiresIn int `json:"expires_in"`
 	RefreshToken string `json:"refresh_token"`
-    //Data GetClientTokenResponseParamsData `json:"data"`
-	//Data GetClientTokenResponseParamsData 
-	
+   
 }
 
 

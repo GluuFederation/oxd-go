@@ -49,6 +49,19 @@ func LoadoxdSetting(){
 	globalvariables.OxdPort = oxdSettingValues["oxd_host_port"].(string)
 	globalvariables.ConnectionType = oxdSettingValues["connection_type"].(string)
 	globalvariables.OxdHost = oxdSettingValues["oxd_host"].(string)
+	
+	ScopeInterfaceType := oxdSettingValues["scope"].([]interface{})
+	ScopeStringArray := make([]string, len(ScopeInterfaceType))
+	for i := range ScopeInterfaceType {
+		ScopeStringArray[i] = ScopeInterfaceType[i].(string)
+	}
+	globalvariables.Scope = ScopeStringArray
+	GrantTypeInterfaceType := oxdSettingValues["grant_types"].([]interface{})
+	GrantTypeStringArray := make([]string, len(GrantTypeInterfaceType))
+	for i := range GrantTypeInterfaceType {
+		GrantTypeStringArray[i] = GrantTypeInterfaceType[i].(string)
+	}
+	globalvariables.GrantType = GrantTypeStringArray
 	globalvariables.Host = fmt.Sprint(globalvariables.OxdHost+":"+globalvariables.OxdPort)
 }
 func GetTemplate(name string) *template.Template{
@@ -56,10 +69,23 @@ func GetTemplate(name string) *template.Template{
 	))
 	return tmpl
 }
+var isdynamicresponse struct {
+	Response  string            `json:"response"`
+}
 func main() {
 
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		page.SetupClientPage(w, r, serverConf, &session)
+		LoadoxdSetting()
+		page.SetupClientPage(w, r, serverConf, &session,globalvariables)
+		
+	})
+
+	http.HandleFunc("/checkregistration", func(w http.ResponseWriter, r *http.Request) {
+	
+	   isdynamic := page.IsDynamicRegistrationPage(w, r, serverConf, &session)
+	   isdynamicresponse.Response = isdynamic
+	   IsdynamicResponseJson, _ := json.Marshal(isdynamicresponse)
+	   w.Write(IsdynamicResponseJson)
 		
 	})
 
