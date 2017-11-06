@@ -38,6 +38,7 @@ func LoadoxdSetting(){
 	oxdSettingValues := oxdSettingsInterface.(map[string]interface{})
 
 	globalvariables.Httpresturl = oxdSettingValues["https_rest_url"].(string)
+	globalvariables.ConnectionType = oxdSettingValues["connection_type"].(string)
 	globalvariables.ClientName = oxdSettingValues["client_name"].(string)
     globalvariables.RedirectUri = oxdSettingValues["authorization_redirect_uri"].(string)
 	globalvariables.LogoutUri = oxdSettingValues["post_logout_redirect_uri"].(string)
@@ -152,6 +153,7 @@ func main() {
 
 	http.HandleFunc("/protectresources", func(w http.ResponseWriter, r *http.Request) {
 		LoadoxdSetting()
+		
 		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
 		page.ProtectResourcesPage(w, r, serverConf, &session, ProtectionAccessToken,globalvariables)
 	})

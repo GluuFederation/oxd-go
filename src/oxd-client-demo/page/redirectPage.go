@@ -45,12 +45,21 @@ func readQueryParams(r *http.Request, session *conf.SessionVars){
 func getTokensByCode(session conf.SessionVars,configuration conf.Configuration,  accesstoken string,globalvariables conf.GlobalVars) model.TokensByCodeResponseParams{
 	
 	var oxdResponse transport.OxdResponse
+	ConnectionType := globalvariables.ConnectionType
+	HttpRestUrl := globalvariables.Httpresturl 
+	if(ConnectionType == "local") {
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_TOKENS_BY_CODE,
-			model.TokensByCodeRequestParams{globalvariables.Oxdid, accesstoken, Code, State }),
+			model.TokensByCodeRequestParams{OxdId : globalvariables.Oxdid, ProtectionAccessToken : accesstoken, Code: Code, State : State }),
 		&oxdResponse,
 		globalvariables.Host)
-
+		} else {
+			page.CallOxdHttpsExtension(
+				client.BuildOxdRequest(constants.GET_TOKENS_BY_CODE,
+					model.TokensByCodeRequestParams{OxdId : globalvariables.Oxdid, ProtectionAccessToken : accesstoken, Code: Code, State : State }),
+				&oxdResponse,
+				HttpRestUrl)
+		}
 	var response model.TokensByCodeResponseParams
 	oxdResponse.GetParams(&response)
 	return response
@@ -74,13 +83,24 @@ func saveRefreshTokens(response model.GetAccessTokenByRefreshTokenResponseParams
 
 func getAccessTokenByRefreshToken(session conf.SessionVars,configuration conf.Configuration,  accesstoken string,globalvariables conf.GlobalVars) model.GetAccessTokenByRefreshTokenResponseParams{
 	var oxdResponse transport.OxdResponse
+	ConnectionType := globalvariables.ConnectionType
+	HttpRestUrl := globalvariables.Httpresturl
+	if(ConnectionType == "local") {
 		page.CallOxdServer(
 			client.BuildOxdRequest(constants.GET_ACCESS_TOKEN_BY_REFRESH_TOKEN,
-				model.GetAccessTokenByRefreshTokenRequestParams{globalvariables.Oxdid , RefreshToken , accesstoken}),
+				model.GetAccessTokenByRefreshTokenRequestParams{OxdId:globalvariables.Oxdid , RefreshToken: RefreshToken , ProtectionAccessToken:accesstoken}),
 
 			&oxdResponse,
 			globalvariables.Host)
-	
+			} else {
+				page.CallOxdHttpsExtension(
+					client.BuildOxdRequest(constants.GET_ACCESS_TOKEN_BY_REFRESH_TOKEN,
+						model.GetAccessTokenByRefreshTokenRequestParams{OxdId:globalvariables.Oxdid , RefreshToken: RefreshToken , ProtectionAccessToken:accesstoken}),
+		
+					&oxdResponse,
+					HttpRestUrl)
+                   
+			}
 	
 		var response model.GetAccessTokenByRefreshTokenResponseParams
 		oxdResponse.GetParams(&response)
@@ -91,12 +111,19 @@ func getAccessTokenByRefreshToken(session conf.SessionVars,configuration conf.Co
 	func UserInfo( session conf.SessionVars, configuration conf.Configuration, accesstoken string,globalvariables conf.GlobalVars)  conf.SessionVars   {
 
 			var oxdResponse transport.OxdResponse
-		
+		    ConnectionType := globalvariables.ConnectionType
+			HttpRestUrl := globalvariables.Httpresturl
+			if(ConnectionType == "local") {
 			page.CallOxdServer(
-				client.BuildOxdRequest(constants.GET_USER_INFO,model.UserInfoRequestParams{globalvariables.Oxdid,accesstoken,AccessToken}),
+				client.BuildOxdRequest(constants.GET_USER_INFO,model.UserInfoRequestParams{OxdId : globalvariables.Oxdid, ProtectionAccessToken : accesstoken, AccessToken : AccessToken}),
 				&oxdResponse,
 				globalvariables.Host)
-		
+			} else {
+				page.CallOxdHttpsExtension(
+					client.BuildOxdRequest(constants.GET_USER_INFO,model.UserInfoRequestParams{OxdId : globalvariables.Oxdid, ProtectionAccessToken : accesstoken, AccessToken : AccessToken}),
+					&oxdResponse,
+					HttpRestUrl)
+			}
 			var response model.UserInfoResponseParams
 			oxdResponse.GetParams(&response)
 			username := response.Claims["name"]

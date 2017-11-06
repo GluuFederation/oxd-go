@@ -22,10 +22,16 @@ type OxdRequest struct {
 }
 
 func (r OxdRequest) ToOxdJSON() []byte{
-	//fmt.Println(r)
+	
 	value , err := json.Marshal(r)
 	utils.CheckError("transport.OxdRequest","JSON marshalling error",err)
 	return append(getLength(value),value...)
+}
+func (r OxdRequest) ToOxdJSONHttps() []byte{
+	
+	value , err := json.Marshal(r.Params)
+	utils.CheckError("transport.OxdRequest","JSON marshalling error",err)
+	return value
 }
 
 func getLength(message []byte) []byte {

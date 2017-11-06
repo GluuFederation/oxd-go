@@ -9,7 +9,7 @@ type AuthorizationUrlRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	ProtectionAccessToken string `json:"protection_access_token"`
 	AcrValues []string  `json:"acr_values"`
-	Scope string `json:"scope,omitempty"`
+	Scope string `json:"scope"`
 	
 	Prompt string `json:"prompt"`
 	CustomParameters 

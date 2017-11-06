@@ -11,8 +11,8 @@ const (
 	// Register
 	REGISTER_SITE CommandType = "register_site"
 	SETUP_CLIENT CommandType = "setup_client"
-	UPDATE_SITE   CommandType = "update_site_registration"
-
+	//UPDATE_SITE   CommandType = "update_site_registration"
+	UPDATE_SITE   CommandType = "update_site"
 	// Connect (stateful)
 	GET_CLIENT_TOKEN       CommandType = "get_client_token"
 	GET_AUTHORIZATION_URL  CommandType = "get_authorization_url"

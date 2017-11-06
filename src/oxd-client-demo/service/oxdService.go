@@ -20,6 +20,12 @@ func CallOxdServer (request transport.OxdRequest,response *transport.OxdResponse
 	debugCommunication(request,*response)
 }
 
+func CallOxdHttpsExtension (request transport.OxdRequest,response *transport.OxdResponse, oxdWebUrl string){
+	println("CallOxdHttpsExtension")
+	client.Send(request, oxdWebUrl, response)
+	debugCommunication(request,*response)
+}
+
 func debugCommunication(request transport.OxdRequest,response transport.OxdResponse)  {
 	LOG :=loggo.GetLogger("default")
     res,err := json.Marshal(response)

@@ -11,7 +11,7 @@ type UpdateSiteRequestParams struct {
 	OpHost                        string  `json:"op_host"`
 
 	OxdId                         string `json:"oxd_id"`
-	AuthorizationRedirectUri      string `json:"authorization_redirect_uriy"`
+	AuthorizationRedirectUri      string `json:"authorization_redirect_uri"`
 	PostLogoutRedirectUri         string  `json:"post_logout_redirect_uri"`
 	ProtectionAccessToken         string `json:"protection_access_token"`
 

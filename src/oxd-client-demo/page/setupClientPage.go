@@ -29,12 +29,22 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.
 	request.AuthorizationRedirectUri = r.FormValue("RedirectUrl")
 	request.PostLogoutRedirectUri = r.FormValue("PostLogoutRedirectUrl")
 	OxdHost := fmt.Sprint(configuration.Host+":"+r.FormValue("OxdPort"))
+	ConnectionType := r.FormValue("Connectiontype")
+	HttpRestUrl := r.FormValue("Httpresturl")
 	
-	
-	page.CallOxdServer(
-		client.BuildOxdRequest(constants.SETUP_CLIENT,request),
-		&oxdResponse,
-		OxdHost)
+
+	if(ConnectionType == "local") {
+			page.CallOxdServer(
+				client.BuildOxdRequest(constants.SETUP_CLIENT,request),
+				&oxdResponse,
+				OxdHost)
+	} else {
+			page.CallOxdHttpsExtension(
+				client.BuildOxdRequest(constants.SETUP_CLIENT,request),
+				&oxdResponse,
+				HttpRestUrl)
+
+			}
 
 	var response model.SetupClientResponseParams
 	
@@ -46,18 +56,18 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.
 	
 	savesettings.OxdId = response.OxdId
 	savesettings.ClientId = response.ClientId
-	savesettings.OxdHost = request.OpHost
+	savesettings.OxdHost = configuration.Host
 	savesettings.ClientName = request.ClientName
 	savesettings.OxdPort = r.FormValue("OxdPort")
 	savesettings.ClientSecret = response.ClientSecret
 	savesettings.ConnectionType = r.FormValue("Connectiontype")
 	savesettings.PostLogoutRedirectUri = request.PostLogoutRedirectUri
 	savesettings.Scope = configuration.RegisterSiteRequestParams.Scope
-	savesettings.OpHost = configuration.RegisterSiteRequestParams.OpHost
+	savesettings.OpHost = request.OpHost 
 	savesettings.AuthorizationRedirectUri = request.AuthorizationRedirectUri
 	savesettings.GrantType = configuration.RegisterSiteRequestParams.GrantType
 	savesettings.ResponseTypes = configuration.RegisterSiteRequestParams.ResponseTypes
-
+    savesettings.HttpRestUrl = HttpRestUrl
 	utils.SaveoxdSetting(w,savesettings)
 	
     

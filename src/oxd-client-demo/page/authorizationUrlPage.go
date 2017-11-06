@@ -16,6 +16,7 @@ import (
 	"oxd-client/model/transport"
 	"oxd-client-demo/service"
 	"github.com/juju/loggo"
+	//"oxd-client-demo/utils"
 )
 
 func AuthorizationUrlPageSite(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session conf.SessionVars,  accesstoken string ,  globalvariables conf.GlobalVars) {
@@ -30,17 +31,27 @@ func AuthorizationUrlPageSite(w http.ResponseWriter, r *http.Request, configurat
 	row.CustomParameters["param2"] = "value2"
 	row.OxdId = globalvariables.Oxdid
 	row.ProtectionAccessToken = accesstoken
+	ConnectionType := globalvariables.ConnectionType
+	HttpRestUrl := globalvariables.Httpresturl 
 
+	if(ConnectionType == "local") {
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,
 			row),
 		&oxdResponse,
 		globalvariables.Host)
+		} else {
+            page.CallOxdHttpsExtension(
+				client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,
+					row),
+				&oxdResponse,
+				HttpRestUrl)
 
+		}
 
 	var response model.AuthorizationUrlResponseParams
 	oxdResponse.GetParams(&response)
-	 
+	//utils.DisplayResponse(w,response)
 	log.Debugf(response.AuthorizationUrl)
 	
 	http.Redirect(w, r, response.AuthorizationUrl, http.StatusPermanentRedirect)

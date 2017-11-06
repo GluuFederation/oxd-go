@@ -19,12 +19,20 @@ func ProtectResourcesPage(w http.ResponseWriter, r *http.Request, configuration 
 
    var oxdResponse transport.OxdResponse
    requestParams := uma.RsProtectRequestParams{globalvariables.Oxdid, []protect.RsResource{ protect.RsResource{configuration.Path, configuration.Condition}}, accesstoken}
-    
+   ConnectionType := globalvariables.ConnectionType
+   HttpRestUrl := globalvariables.Httpresturl 
+   if(ConnectionType == "local") {
    page.CallOxdServer(
 	client.BuildOxdRequest(constants.RS_PROTECT,requestParams),
 	&oxdResponse,
 	globalvariables.Host)
-
+   } else {
+	page.CallOxdHttpsExtension(
+		client.BuildOxdRequest(constants.RS_PROTECT,
+			requestParams),
+		&oxdResponse,
+		HttpRestUrl)
+   }
 	var response uma.RsProtectResponseParams
 	
 	oxdResponse.GetParams(&response)

@@ -25,19 +25,28 @@ func UpdateSitePage(w http.ResponseWriter, r *http.Request, configuration conf.C
 
 	request.OxdId = r.FormValue("OxdID")
 	request.OpHost = r.FormValue("OphostId")
-	request.ClientId = r.FormValue("clientid")
+	request.ClientId = r.FormValue("Clientid")
 	request.ProtectionAccessToken  = accesstoken
 	request.ClientName = r.FormValue("Client_name")
-	request.ClientSecret = r.FormValue("clientsecret")
+	request.ClientSecret = r.FormValue("Clientsecret")
 	request.AuthorizationRedirectUri = r.FormValue("RedirectUrl")
 	request.Scope = globalvariables.Scope
 	request.PostLogoutRedirectUri = r.FormValue("PostLogoutRedirectUrl")
 	request.GrantType = globalvariables.GrantType
+	ConnectionType := r.FormValue("Connectiontype")
+	HttpRestUrl := r.FormValue("Httpresturl")
 	
+	if(ConnectionType == "local") {
     page.CallOxdServer(
 		client.BuildOxdRequest(constants.UPDATE_SITE,request),
 		&oxdResponse,
 		globalvariables.Host)
+	} else{
+		page.CallOxdHttpsExtension(
+			client.BuildOxdRequest(constants.UPDATE_SITE,request),
+			&oxdResponse,
+			HttpRestUrl)
+	}
 
     var response model.UpdateSiteResponseParams
 	var updatesettings newmodel.OxdSetting

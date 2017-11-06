@@ -6,11 +6,19 @@
 package transport
 
 import (
+	"fmt"
 	"net"
+	"bytes"
+	"net/http"
 	"io/ioutil"
 	"oxd-client/utils"
+	"oxd-client/constants"
+	"encoding/json"
+	"crypto/tls"
 	"io"
 	"strconv"
+	"strings"
+	
 )
 
 func SocketSend( request []byte, address string) []byte {
@@ -21,13 +29,53 @@ func SocketSend( request []byte, address string) []byte {
 
 	response := getMessage(conn, getMessageLength(conn))
 	conn.Close()
+	
 	return response
 }
+func SendViaHttp( request []byte, address string,command constants.CommandType) []byte {
+	var accesstoken = " "
+	var requestInterface interface{}
+	tr := &http.Transport{
+        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	
+	requeststring := string(request[:])
+	
+	commandtype := fmt.Sprint(command)
+	endpoint := fmt.Sprint(address+"/"+commandtype)
+	endpointurl := strings.Replace(endpoint, "_","-", -1)
+
+	findaccesstoken := bytes.Index(request, []byte("protection_access_token"))
+	
+	if (findaccesstoken != -1) {
+			err := json.Unmarshal(request, &requestInterface)
+			if err != nil {
+				fmt.Println("error:", err)
+			}
+			requestValues := requestInterface.(map[string]interface{})
+			accesstoken = requestValues["protection_access_token"].(string)
+	}
+	sendrequest, _ := http.NewRequest("POST", endpointurl, bytes.NewBufferString(requeststring))
+	sendrequest.Header.Set("Content-Type", "application/json")
+	if(accesstoken != "") {
+		sendrequest.Header.Set("Authorization", "Bearer " + accesstoken)
+	}
+	
+	client := &http.Client{Transport: tr}
+    serveresponse, err := client.Do(sendrequest)
+	if err != nil {
+		fmt.Printf("The HTTP request failed with error %s\n", err)
+	} 
+	response, err := ioutil.ReadAll(serveresponse.Body)
+	defer serveresponse.Body.Close()
+	return response
+	}
 
 func getMessage(reader io.Reader, length int64) []byte{
 	messageReader := io.LimitReader(reader,length)
 	result, err := ioutil.ReadAll(messageReader)
 	utils.CheckError("transport.transport","Cannot read message",err)
+	
 	return result
 }
 

@@ -22,12 +22,20 @@ func RpGetClaimsGatheringUrlPage(w http.ResponseWriter, r *http.Request, configu
    requestParams.Ticket = session.UMATicket
    requestParams.ClaimsRedirectURI = "https://client.example.com"
    requestParams.ProtectionAccessToken = accesstoken
+   ConnectionType := globalvariables.ConnectionType
+   HttpRestUrl := globalvariables.Httpresturl 
    
+   if(ConnectionType == "local") {
    page.CallOxdServer(
 	client.BuildOxdRequest(constants.RP_GET_CLAIMS_GATHERING_URL,requestParams),
 	&oxdResponse,
 	globalvariables.Host)
-
+   } else {
+	page.CallOxdHttpsExtension(
+		client.BuildOxdRequest(constants.RP_GET_CLAIMS_GATHERING_URL,requestParams),
+		&oxdResponse,
+		HttpRestUrl)
+   }
 	var response uma.RpGetClaimsGatheringUrlResponseParams
 	oxdResponse.GetParams(&response)
 	

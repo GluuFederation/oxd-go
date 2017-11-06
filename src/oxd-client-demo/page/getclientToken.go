@@ -20,11 +20,21 @@ func GetClientTokenPageSite(w http.ResponseWriter, r *http.Request, configuratio
 	request.OxdId = globalvariables.Oxdid
 	request.ClientID = globalvariables.Clientid
 	request.ClientSecret = globalvariables.Clientsecret
-	request.OpHost = globalvariables.Ophost 
+	request.OpHost = globalvariables.Ophost
+	ConnectionType := globalvariables.ConnectionType
+	HttpRestUrl := globalvariables.Httpresturl 
+
+	if(ConnectionType == "local") {
 	page.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_CLIENT_TOKEN,request),
 		&oxdResponse,
-		globalvariables.Host)		 
+		globalvariables.Host)	
+	} else{	 
+		page.CallOxdHttpsExtension(
+			client.BuildOxdRequest(constants.GET_CLIENT_TOKEN,request),
+			&oxdResponse,
+			HttpRestUrl)
+		}
 
 	var response model.GetClientTokenResponseParams
 	oxdResponse.GetParams(&response)

@@ -39,11 +39,9 @@ func IsDynamicRegistrationPage(w http.ResponseWriter, r *http.Request, configura
 		
 		Response = "false"
 
-	}
-	if(configurationValues["registration_endpoint"] != nil) {
-		
-		Response = "true"
-		
+	} else {
+
+        Response = "true"
 	}
 	
     return Response

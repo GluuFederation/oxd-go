@@ -4,9 +4,9 @@ type GetAccessTokenByRefreshTokenRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	RefreshToken	string `json:"refresh_token"`
 	ProtectionAccessToken string `json:"protection_access_token"`
-	// Scope string `json:"scope,omitempty"`
-    // Code  string `json:"code,omitempty"`
-	// State string `json:"state,omitempty"`
+	Scope string `json:"scope,omitempty"`
+    Code  string `json:"code,omitempty"`
+    State string `json:"state,omitempty"`
 }
 
 type GetAccessTokenByRefreshTokenResponseParams struct {

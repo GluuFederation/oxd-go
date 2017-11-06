@@ -15,4 +15,5 @@ type SessionVars struct {
 	IdToken string
 	Name string
 	Email string
+	
 }
