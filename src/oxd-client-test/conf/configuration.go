@@ -16,12 +16,14 @@ import (
 
 type Configuration struct {
 	Host string `toml:"host"`
+	OxdHttpsHost string `toml:"oxdHttpsHost"`
 	OpHost string `toml:"opHost"`
 	RedirectUrl string `toml:"redirectUrl"`
 	PostLogoutRedirectUrl string `toml:"postLogoutRedirectUrl"`
 	LogoutUrl string `toml:"logoutUrl"`
 	UserId string `toml:"userId"`
 	UserSecret string `toml:"userSecret"`
+	OxdId string `toml:"oxdId"`
 	ClientId string `toml:"clientId"`
 	ClientSecret string `toml:"clientSecret"`
 	Loglevel string `toml:"logLevel"`

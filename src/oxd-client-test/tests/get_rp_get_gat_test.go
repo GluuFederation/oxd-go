@@ -18,13 +18,15 @@ import (
 
 func TestRpGetGat(t *testing.T) {
 	//BEFORE
-	requestParams := uma.RpGetGatRequestParams{utils.RegisterClient(),[]string{"http://photoz.example.com/dev/actions/all"}}
+	requestParams := uma.RpGetGatRequestParams{utils.RegisterClient(""),[]string{"http://photoz.example.com/dev/actions/all"}}
 	request := client.BuildOxdRequest(constants.RP_GET_GAT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RP_GET_GAT}
+
 	var response transport.OxdResponse
 	var responseParams uma.RpGetGatResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

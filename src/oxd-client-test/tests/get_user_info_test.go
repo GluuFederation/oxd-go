@@ -19,13 +19,15 @@ import (
 func TestGetUserInfo(t *testing.T) {
 	//BEFORE
 	codeResponse, oxdId := utils.ExecCodeFlow()
-	requestParams := model.UserInfoRequestParams{oxdId,codeResponse.AccessToken}
+	requestParams := model.UserInfoRequestParams{oxdId,"",codeResponse.AccessToken}
 	request := client.BuildOxdRequest(constants.GET_USER_INFO,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.GET_USER_INFO}
+
 	var response transport.OxdResponse
 	var responseParams model.UserInfoResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

@@ -18,17 +18,19 @@ import (
 
 func TestGetAuthorizationCode(t *testing.T) {
 	//BEFORE
-	requestParams := model.AuthorizationCodeRequestParams{utils.RegisterClient(),
+	requestParams := model.AuthorizationCodeRequestParams{utils.RegisterClient(""),
 		conf.TestConfiguration.UserId,
 		conf.TestConfiguration.UserSecret,
 		make([]string,0),
 		"",""}
 	request := client.BuildOxdRequest(constants.GET_AUTHORIZATION_CODE,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN}
+
 	var response transport.OxdResponse
 	var responseParams model.AuthorizationCodeResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

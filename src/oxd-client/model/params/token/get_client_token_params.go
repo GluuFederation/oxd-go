@@ -8,7 +8,7 @@ type GetClientTokenRequestParams struct {
 	ClientSecret string `json:"client_secret"`
 	OpHost string `json:"op_host"`
 	OpDiscoveryPath string `json:"op_discovery_path,omitempty"`
-	Scope string `json:"scope,omitempty"`
+	Scope []string `json:"scope,omitempty"`
 	
 }
 

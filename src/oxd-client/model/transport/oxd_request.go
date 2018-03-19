@@ -21,13 +21,13 @@ type OxdRequest struct {
 	Params Param `json:"params"`
 }
 
-func (r OxdRequest) ToOxdJSON() []byte{
+func (r OxdRequest) ToOxdJSONWithLength() []byte{
 	
 	value , err := json.Marshal(r)
 	utils.CheckError("transport.OxdRequest","JSON marshalling error",err)
 	return append(getLength(value),value...)
 }
-func (r OxdRequest) ToOxdJSONHttps() []byte{
+func (r OxdRequest) ToOxdJSON() []byte{
 	
 	value , err := json.Marshal(r.Params)
 	utils.CheckError("transport.OxdRequest","JSON marshalling error",err)

@@ -13,8 +13,10 @@ const (
 	SETUP_CLIENT CommandType = "setup_client"
 	//UPDATE_SITE   CommandType = "update_site_registration"
 	UPDATE_SITE   CommandType = "update_site"
+	REMOVE_SITE   CommandType = "remove_site"
 	// Connect (stateful)
 	GET_CLIENT_TOKEN       CommandType = "get_client_token"
+	INTROSPECT_ACCESS_TOKEN       CommandType = "introspect_access_token"
 	GET_AUTHORIZATION_URL  CommandType = "get_authorization_url"
 	GET_AUTHORIZATION_CODE CommandType = "get_authorization_code"
 	GET_TOKENS_BY_CODE     CommandType = "get_tokens_by_code"

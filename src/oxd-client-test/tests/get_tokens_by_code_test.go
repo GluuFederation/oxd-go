@@ -19,13 +19,15 @@ import (
 func TestGetTokensByCode(t *testing.T) {
 	//BEFORE
 	codeResponse, codeRequest := utils.ExecCode()
-	requestParams := model.TokensByCodeRequestParams{codeRequest.OxdId,codeResponse.Code,codeRequest.State}
+	requestParams := model.TokensByCodeRequestParams{codeRequest.OxdId,"",codeResponse.Code,codeRequest.State}
 	request := client.BuildOxdRequest(constants.GET_TOKENS_BY_CODE,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.GET_TOKENS_BY_CODE}
+
 	var response transport.OxdResponse
 	var responseParams model.TokensByCodeResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

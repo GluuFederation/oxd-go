@@ -14,15 +14,9 @@ import (
 	"github.com/juju/loggo"
 )
 
-func CallOxdServer (request transport.OxdRequest,response *transport.OxdResponse, host string){
+func CallOxdServer (request transport.OxdRequest,response *transport.OxdResponse, params transport.OxdConnectionParam){
 	
-	client.Send(request, host, response)
-	debugCommunication(request,*response)
-}
-
-func CallOxdHttpsExtension (request transport.OxdRequest,response *transport.OxdResponse, oxdWebUrl string){
-	println("CallOxdHttpsExtension")
-	client.Send(request, oxdWebUrl, response)
+	client.Send(request, params, response)
 	debugCommunication(request,*response)
 }
 

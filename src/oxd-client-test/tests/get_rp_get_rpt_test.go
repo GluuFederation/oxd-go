@@ -19,13 +19,15 @@ import (
 func TestRpGetRpt(t *testing.T) {
 	//BEFORE
 	requestParams := uma.RpGetRptRequestParams{}
-	requestParams.OxdId = utils.RegisterClient()
+	requestParams.OxdId = utils.RegisterClient("")
 	request := client.BuildOxdRequest(constants.RP_GET_RPT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RP_GET_RPT}
+
 	var response transport.OxdResponse
 	var responseParams uma.RpGetRptResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

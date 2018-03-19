@@ -8,24 +8,19 @@ package model
 import "time"
 
 type UpdateSiteRequestParams struct {
-	OpHost                        string  `json:"op_host"`
-
 	OxdId                         string `json:"oxd_id"`
 	AuthorizationRedirectUri      string `json:"authorization_redirect_uri"`
 	PostLogoutRedirectUri         string  `json:"post_logout_redirect_uri"`
-	ProtectionAccessToken         string `json:"protection_access_token"`
+	ProtectionAccessToken         string `json:"protection_access_token,omitempty"`
 
-	RedirectUris                  []string  `json:"redirect_uris,omitempty"`
 	ResponseTypes                 []string  `json:"response_types,omitempty"`
 
-	ClientId                      string  `json:"client_id"`
-	ClientName                    string  `json:"client_name"`
+	ClientId                    string  `json:"client_id"`
 	ClientSecret                  string  `json:"client_secret"`
 	ClientJwksUri                 string  `json:"client_jwks_uri"`
 	ClientSectorIdentifierUri     string  `json:"client_sector_identifier_uri,omitempty"`
 	ClientTokenEndpointAuthMethod string  `json:"client_token_endpoint_auth_method,omitempty"`
 	ClientRequestUris             []string  `json:"client_request_uris,omitempty"`
-	ClientLogoutUri               []string  `json:"client_logout_uris,omitempty"`
 	ClientSecretExpiresAt         time.Time  `json:"client_secret_expires_at,omitempty"`
 
 	Scope                         []string  `json:"scope"`
@@ -34,11 +29,8 @@ type UpdateSiteRequestParams struct {
 	AcrValues                     []string  `json:"acr_values"`
 	GrantType                     []string  `json:"grant_types"`
 	Contacts                      []string  `json:"contacts,omitempty"`
-	
 }
 
 type UpdateSiteResponseParams struct {
-	Status string `json:"status"`
 	OxdId string `json:"oxd_id"`
-	
 }

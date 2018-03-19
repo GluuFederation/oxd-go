@@ -19,14 +19,16 @@ import (
 
 func TestRsProtect(t *testing.T) {
 	//BEFORE
-	requestParams := uma.RsProtectRequestParams{utils.RegisterClient(), []protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}}}
-	requestParams.OxdId = utils.RegisterClient()
+	requestParams := uma.RsProtectRequestParams{utils.RegisterClient(""), []protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}},""}
+	requestParams.OxdId = utils.RegisterClient("")
 	request := client.BuildOxdRequest(constants.RS_PROTECT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RS_PROTECT}
+
 	var response transport.OxdResponse
 	var responseParams uma.RsProtectResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

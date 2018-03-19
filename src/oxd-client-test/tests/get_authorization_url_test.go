@@ -18,13 +18,15 @@ import (
 
 func TestGetAuthorizationUrl(t *testing.T) {
 	//BEFORE
-	requestParams := model.AuthorizationUrlRequestParams{utils.RegisterClient(),make([]string,0),"",make([]string,0)}
+	requestParams := model.AuthorizationUrlRequestParams{utils.RegisterClient(""),"",make([]string,0),"","",nil}
 	request := client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET, "",constants.GET_AUTHORIZATION_URL}
+
 	var response transport.OxdResponse
 	var responseParams model.AuthorizationUrlResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

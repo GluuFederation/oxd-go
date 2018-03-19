@@ -5,6 +5,7 @@ type SetupClientRequestParams struct {
 	OpHost string  `json:"op_host"`
 	AuthorizationRedirectUri string  `json:"authorization_redirect_uri"`
 	PostLogoutRedirectUri string  `json:"post_logout_redirect_uri"`
+	ApplicationType string `json:"application_type"`
 
 	RedirectUris []string  `json:"redirect_uris"`
 	ResponseTypes []string  `json:"response_types"`
@@ -22,7 +23,7 @@ type SetupClientRequestParams struct {
 	UiLocales  []string  `json:"ui_locales"`
 	ClaimsLocales  []string  `json:"claims_locales"`
 	AcrValues  []string  `json:"acr_values"`
-	GrantType  []string  `json:"grant_types"`
+	GrantTypes  []string  `json:"grant_types"`
 	Contacts []string  `json:"contacts"`
 }
 

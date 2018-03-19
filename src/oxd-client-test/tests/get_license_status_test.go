@@ -19,11 +19,13 @@ func TestLicenseStatus(t *testing.T) {
 	//BEFORE
 	requestParams := validation.LicenseStatusRequestParams{}
 	request := client.BuildOxdRequest(constants.LICENSE_STATUS,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.LICENSE_STATUS}
+
 	var response transport.OxdResponse
 	var responseParams validation.LicenseStatusResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

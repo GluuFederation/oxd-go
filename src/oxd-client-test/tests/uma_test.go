@@ -18,7 +18,7 @@ import (
 )
 
 func TestUma(t *testing.T) {
-	oxdId := utils.RegisterClient()
+	oxdId := utils.RegisterClient("")
 	protectRs(oxdId)
 	checkAccessParams := checkAccess(oxdId,"", "/ws/phone", "GET")
 
@@ -39,32 +39,37 @@ func TestUma(t *testing.T) {
 
 func protectRs(oxdID string) {
 	requestParams := uma.RsProtectRequestParams{oxdID,
-		[]protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}}}
+		[]protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}},""}
 	request := client.BuildOxdRequest(constants.RS_PROTECT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RS_PROTECT}
 	var response transport.OxdResponse
 
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 }
 
 func checkAccess(oxdID string, rpt string, path string, httpMethod string ) uma.RsCheckAccessResponseParams{
-	requestParams := uma.RsCheckAccessRequestParams{oxdID,rpt,path,httpMethod}
+	requestParams := uma.RsCheckAccessRequestParams{oxdID,rpt,path,httpMethod,""}
 	request := client.BuildOxdRequest(constants.RS_CHECK_ACCESS,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RS_CHECK_ACCESS}
+
 	var response transport.OxdResponse
 	var responseParams uma.RsCheckAccessResponseParams
 
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	response.GetParams(&responseParams)
 	return responseParams
 }
 
 func obtainRpt(oxdID string) string {
-	requestParams := uma.RpGetRptRequestParams{oxdID,false}
+	requestParams := uma.RpGetRptRequestParams{oxdID,"","","","","","","",""}
 	request := client.BuildOxdRequest(constants.RP_GET_RPT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RP_GET_RPT}
+
 	var response transport.OxdResponse
 	var responseParams uma.RpGetRptResponseParams
 
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	response.GetParams(&responseParams)
 	return responseParams.Rpt
@@ -73,20 +78,24 @@ func obtainRpt(oxdID string) string {
 func authorizeRpt(oxdID string, rpt string, ticket string){
 	requestParams := uma.RpAuthorizeRptRequestParams{oxdID,rpt,ticket}
 	request := client.BuildOxdRequest(constants.RP_AUTHORIZE_RPT,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RP_AUTHORIZE_RPT}
+
 	var response transport.OxdResponse
 	var responseParams uma.RpAuthorizeRptResponseParams
 
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	response.GetParams(&responseParams)
 }
 
 func assertNotProtectedError(oxdID string, rpt string, t *testing.T){
-	requestParams := uma.RsCheckAccessRequestParams{oxdID,rpt,"/no/such/path","GET"}
+	requestParams := uma.RsCheckAccessRequestParams{oxdID,rpt,"/no/such/path","GET",""}
 	request := client.BuildOxdRequest(constants.RS_CHECK_ACCESS,requestParams)
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RS_CHECK_ACCESS}
+
 	var response transport.OxdResponse
 
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	assert.Equal(t,constants.STATUS_ERROR,response.Status)
 }

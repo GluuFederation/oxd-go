@@ -19,14 +19,16 @@ import (
 func TestGetLogoutUrl(t *testing.T) {
 	//BEFORE
 	codeResponse, oxdId := utils.ExecCodeFlow()
-	requestParams := model.LogoutUrlRequestParams{oxdId, codeResponse.IdToken,
+	requestParams := model.LogoutUrlRequestParams{oxdId, codeResponse.IdToken,"",
 		conf.TestConfiguration.PostLogoutRedirectUrl, "",""}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.GET_LOGOUT_URI}
+
 	request := client.BuildOxdRequest(constants.GET_LOGOUT_URI,requestParams)
 	var response transport.OxdResponse
 	var responseParams model.LogoutUrlResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)
