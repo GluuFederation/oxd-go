@@ -12,15 +12,27 @@ import (
 	"github.com/stretchr/testify/assert"
 	"oxd-client/model/params/url"
 	"oxd-client/model/transport"
-	"oxd-client-test/conf"
+	//"oxd-client-test/conf"
 	"oxd-client-test/utils"
 )
 
-func TestGetAuthorizationUrl(t *testing.T) {
+func TestSocketGetAuthorizationUrl(t *testing.T) {
+	executeGetAuthorizationUrlTest(t,utils.GetSocketRequest)
+}
+
+func TestRestGetAuthorizationUrl(t *testing.T) {
+	executeGetAuthorizationUrlTest(t,utils.GetRestRequest)
+}
+
+func executeGetAuthorizationUrlTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
-	requestParams := model.AuthorizationUrlRequestParams{utils.RegisterClient(""),"",make([]string,0),"","",nil}
-	request := client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET, "",constants.GET_AUTHORIZATION_URL}
+	requestParams := model.AuthorizationUrlRequestParams{utils.RegisterClientSite(getRequest),
+	"",
+	make([]string,0),
+		make([]string,0),
+	"",
+	nil}
+	request, connectionParam := getRequest(constants.GET_AUTHORIZATION_URL, requestParams)
 
 	var response transport.OxdResponse
 	var responseParams model.AuthorizationUrlResponseParams
