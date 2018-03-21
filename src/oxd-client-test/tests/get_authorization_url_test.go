@@ -26,12 +26,7 @@ func TestRestGetAuthorizationUrl(t *testing.T) {
 
 func executeGetAuthorizationUrlTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
-	requestParams := model.AuthorizationUrlRequestParams{utils.RegisterClientSite(getRequest),
-	"",
-	make([]string,0),
-		make([]string,0),
-	"",
-	nil}
+	requestParams := utils.PrepareAuthorizationUrlRequestParams(getRequest)
 	request, connectionParam := getRequest(constants.GET_AUTHORIZATION_URL, requestParams)
 
 	var response transport.OxdResponse
@@ -45,3 +40,4 @@ func executeGetAuthorizationUrlTest(t *testing.T,getRequest utils.GetRequest) {
 	assert.Equal(t,constants.STATUS_OK,response.Status,"Status should be ok")
 	assert.NotEmpty(t,responseParams.AuthorizationUrl,"AuthorizationUrl should not be empty")
 }
+

@@ -11,15 +11,31 @@ import (
 
 	"oxd-client-test/conf"
 	"oxd-client/model/transport"
-	url "oxd-client/model/params/url"
+	urlParam "oxd-client/model/params/url"
 	token "oxd-client/model/params/token"
 	"oxd-client/model/params/registration"
-	//"testing"
-	//"github.com/stretchr/testify/assert"
-	//"testing"
-	//"github.com/stretchr/testify/assert"
-	//"testing"
-	//"github.com/stretchr/testify/assert"
+    //"github.com/pkg/term"
+	//"strings"
+	//"gopkg.in/resty.v1"
+	//"encoding/json"
+	//"strings"
+	//"github.com/go-resty/resty"
+	//"encoding/json"
+	//"strings"
+	//"github.com/go-resty/resty"
+	//"encoding/json"
+	//"strings"
+	//"bufio"
+	//"os"
+	"fmt"
+	"net/url"
+	"strings"
+	"github.com/go-resty/resty"
+	"crypto/tls"
+	//"net/http"
+	//"net/http"
+	"net/http"
+	"net/http/cookiejar"
 )
 
 type GetRequest func(command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam)
@@ -69,7 +85,7 @@ func PrepareRegisterParams(accessToken string)  model.RegisterSiteRequestParams 
 	requestParams.ResponseTypes = []string{"code"}
 	requestParams.ClientId = conf.TestConfiguration.ClientId
 	requestParams.ClientSecret = conf.TestConfiguration.ClientSecret
-	requestParams.ClientRegistrationClientUri = "https://localhost/identity/"
+	requestParams.ClientRegistrationClientUri = "https://idp.example.com/identity/"
 	//requestParams.ClientRegistrationAccessToken = accessToken
 	//requestParams.ProtectionAccessToken = accessToken
 	return  requestParams
@@ -105,8 +121,8 @@ func PrepareUpdateParams()  model.UpdateSiteRequestParams {
 	return  requestParams
 }
 
-func ExecCodeFlow() (url.AuthorizationCodeFlowResponseParams,string){
-	requestParams := url.AuthorizationCodeFlowRequestParams{
+func ExecCodeFlow() (urlParam.AuthorizationCodeFlowResponseParams,string){
+	requestParams := urlParam.AuthorizationCodeFlowRequestParams{
 		RegisterClient(""),
 		conf.TestConfiguration.RedirectUrl,
 		conf.TestConfiguration.ClientId,
@@ -118,7 +134,7 @@ func ExecCodeFlow() (url.AuthorizationCodeFlowResponseParams,string){
 	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.AUTHORIZATION_CODE_FLOW}
 
 	var response transport.OxdResponse
-	var responseParams url.AuthorizationCodeFlowResponseParams
+	var responseParams urlParam.AuthorizationCodeFlowResponseParams
 	client.Send(request,connectionParam,&response)
 
 	response.GetParams(&responseParams)
@@ -126,21 +142,72 @@ func ExecCodeFlow() (url.AuthorizationCodeFlowResponseParams,string){
 }
 
 
-func ExecCode() (token.AuthorizationCodeResponseParams, token.AuthorizationCodeRequestParams) {
-	requestParams := token.AuthorizationCodeRequestParams{RegisterClient(""),
-		conf.TestConfiguration.UserId,
-		conf.TestConfiguration.UserSecret,
+func GetCode(getRequest GetRequest) (url.Values) {
+	authorizationUrl, authParam := GetAuthorizationUrl(GetRestRequest)
+	urlParam := strings.Replace(authorizationUrl,"restv1/","",-1)
+	resty.SetTLSClientConfig(&tls.Config{InsecureSkipVerify:true})
+	resty.SetRedirectPolicy(resty.FlexibleRedirectPolicy(100))
+	resty.SetDebug(true)
+	resty.SetCookie(&http.Cookie{
+		Name:"csfcfc",
+		Value:"5O2CVUpfqL73",
+		Path: "/",
+		Domain: "idp.example.com",
+		MaxAge: 36000,
+		HttpOnly: true,
+		Secure: false,
+	})
+	jar,_ := cookiejar.New(nil)
+	resty.SetCookieJar(jar)
+	resp,_ := resty.R().Get(urlParam)
+	fmt.Print(resp.Request.URL)
+
+
+	resty.SetTLSClientConfig(&tls.Config{InsecureSkipVerify:true})
+	resty.SetRedirectPolicy(resty.NoRedirectPolicy())
+    resty.SetCookieJar(jar)
+    resp2,_ :=resty.R().SetFormData(map[string]string{
+		"loginForm": "loginForm",
+		"loginForm:username": "admin",
+		"loginForm:password": "test123",
+		"loginForm:loginButton": "Login",
+		"javax.faces.ViewState": "stateless",
+	}).Post("https://idp.example.com/oxauth/login")
+
+	resp3,_ := resty.R().Get(resp2.RawResponse.Header.Get("Location"))
+	resp4,_ := resty.R().Get(resp3.RawResponse.Header.Get("Location"))
+	redirectUrl,_ := url.Parse(resp4.RawResponse.Header.Get("Location"))
+	values := redirectUrl.Query()
+	values.Add("oxdId",authParam.OxdId)
+
+	return values
+}
+
+func PrepareAuthorizationUrlRequestParams(getRequest GetRequest) urlParam.AuthorizationUrlRequestParams {
+	return urlParam.AuthorizationUrlRequestParams{RegisterClientSite(getRequest),
+		"",
 		make([]string,0),
-		"","af0ifjsldkj"}
-	request := client.BuildOxdRequest(constants.GET_AUTHORIZATION_CODE,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.GET_AUTHORIZATION_CODE}
+		[]string{"openid"},
+		"",
+		nil}
+}
+
+func GetAuthorizationUrl(getRequest GetRequest) (string, urlParam.AuthorizationUrlRequestParams) {
+	//BEFORE
+	requestParams := PrepareAuthorizationUrlRequestParams(getRequest)
+	request, connectionParam := getRequest(constants.GET_AUTHORIZATION_URL, requestParams)
 
 	var response transport.OxdResponse
-	var responseParams token.AuthorizationCodeResponseParams
+	var responseParams urlParam.AuthorizationUrlResponseParams
+
+	//TEST
 	client.Send(request,connectionParam,&response)
+
+	//ASSERT
 	response.GetParams(&responseParams)
-	return responseParams, requestParams
+	return responseParams.AuthorizationUrl, requestParams
 }
+
 
 func GetSocketRequest (command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
 	request := client.BuildOxdRequest(command,params)
@@ -185,17 +252,14 @@ func GetClientToken(getRequest GetRequest) string{
 
 
 func RegisterClientSite(getRequest GetRequest) string{
-	//BEFORE
 	requestParams := PrepareRegisterParams(GetClientToken(getRequest))
 	request, connectionParam := getRequest(constants.REGISTER_SITE,requestParams)
 
 	var response transport.OxdResponse
 	var responseParams model.RegisterSiteResponseParams
 
-	//TEST
 	client.Send(request,connectionParam,&response)
 
-	//ASSERT
 	response.GetParams(&responseParams)
 	return responseParams.OxdId
 }

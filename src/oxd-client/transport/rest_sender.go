@@ -25,6 +25,7 @@ type AuthSuccess struct {
 func SendRest( request []byte, requestParam transport.OxdConnectionParam) []byte {
 
 	resty.SetTLSClientConfig(&tls.Config{InsecureSkipVerify:true})
+	resty.SetRedirectPolicy(resty.FlexibleRedirectPolicy(20))
 	resty.SetDebug(true)
 
 	req:= resty.R().

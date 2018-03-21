@@ -6,7 +6,7 @@ postLogoutRedirectUrl="https://client.example.com/cb/logout"
 logoutUrl="https://client.example.com/logout"
 userId="test_user"
 userSecret="test_user_password"
-clientId="@!1B4B.952F.9DB6.8AE9!0001!85C4.4031!0008!7033.9673.D396.9772"
+clientId="@!E77D.AB59.5C1D.D971!0001!EAFB.EC9C!0008!8EF1.EB4C.BEF4.BEA1"
 clientSecret="zaq1@WSX"
 scope="openid"
 

@@ -17,5 +17,16 @@ type TokensByCodeResponseParams struct {
 	ExpiresIn int64 `json:"expires_in"`
 	IdToken	string `json:"id_token"`
 	RefreshToken string `json:"refresh_token"`
-
+	IdTokenClaims IdTokenClaims `json:"id_token_claims"`
+}
+type IdTokenClaims struct {
+	Iss []string `json:"iss"`
+	Sub []string `json:"sub"`
+	Aud []string `json:"aud"`
+	Nonce []string `json:"nonce"`
+	Exp []string `json:"exp"`
+	Iat []string `json:"iat"`
+	AuthTime []string `json:"auth_time"`
+	AtHash []string `json:"at_hash"`
+	oxOpenIdCOnnectVersion []string `json:"oxOpenIDConnectVersion"`
 }
