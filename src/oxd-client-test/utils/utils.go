@@ -250,6 +250,24 @@ func GetClientToken(getRequest GetRequest) string{
 	return responseParams.AccessToken
 }
 
+func GetClientTokenByOxdId(getRequest GetRequest, oxdId string) string{
+
+	requestParams := token.GetClientTokenRequestParams {oxdId,
+		conf.TestConfiguration.ClientId,
+		conf.TestConfiguration.ClientSecret,
+		conf.TestConfiguration.OpHost,
+		"",[]string{"uma_protection"}}
+
+	request, connectionParam := getRequest(constants.GET_CLIENT_TOKEN,requestParams)
+	var response transport.OxdResponse
+	var responseParams token.GetClientTokenResponseParams
+
+	client.Send(request,connectionParam,&response)
+
+	response.GetParams(&responseParams)
+	return responseParams.AccessToken
+}
+
 
 func RegisterClientSite(getRequest GetRequest) string{
 	requestParams := PrepareRegisterParams(GetClientToken(getRequest))
