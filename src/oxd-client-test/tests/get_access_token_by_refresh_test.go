@@ -25,9 +25,9 @@ func TestRestGetTokensByRefreshToken(t *testing.T) {
 
 func executeGetTokensByRefreshTokenTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
-	refreshToken, oxdid := utils.GetRefreshToken(getRequest)
+	refreshResponse, oxdid := utils.GetTokens(getRequest)
 	requestParams := model.GetAccessTokenByRefreshTokenRequestParams{oxdid,
-		refreshToken,"", []string{"openid"}}
+		refreshResponse.RefreshToken,"", []string{"openid"}}
 
 	request,connectionParam := getRequest(constants.GET_ACCESS_TOKEN_BY_REFRESH_TOKEN,requestParams)
 	var response transport.OxdResponse

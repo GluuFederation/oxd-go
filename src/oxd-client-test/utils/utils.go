@@ -268,7 +268,7 @@ func GetClientTokenByOxdId(getRequest GetRequest, oxdId string) string{
 	return responseParams.AccessToken
 }
 
-func GetRefreshToken(getRequest GetRequest) (string, string){
+func GetTokens(getRequest GetRequest) (token.TokensByCodeResponseParams, string){
 	codeResponses := GetCode(getRequest)
 	requestParams := token.TokensByCodeRequestParams{codeResponses.Get("oxdId"),
 		"",codeResponses.Get("code"), codeResponses.Get("state")}
@@ -280,7 +280,7 @@ func GetRefreshToken(getRequest GetRequest) (string, string){
 	client.Send(request,connectionParam,&response)
 
 	response.GetParams(&responseParams)
-	return responseParams.RefreshToken,codeResponses.Get("oxdId")
+	return responseParams,codeResponses.Get("oxdId")
 }
 
 

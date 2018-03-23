@@ -13,16 +13,23 @@ import (
 	"oxd-client/model/params"
 	"oxd-client-test/utils"
 	"oxd-client/model/transport"
-	"oxd-client-test/conf"
 )
 
-func TestGetUserInfo(t *testing.T) {
-	//BEFORE
-	codeResponse, oxdId := utils.ExecCodeFlow()
-	requestParams := model.UserInfoRequestParams{oxdId,"",codeResponse.AccessToken}
-	request := client.BuildOxdRequest(constants.GET_USER_INFO,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.GET_USER_INFO}
+func TestSocketGetUserInfo(t *testing.T) {
+	executeGetUserInfoTest(t,utils.GetSocketRequest)
+}
 
+func TestRestGetUserInfo(t *testing.T) {
+	executeGetUserInfoTest(t,utils.GetRestRequest)
+}
+
+func executeGetUserInfoTest(t *testing.T,getRequest utils.GetRequest) {
+	//BEFORE
+	tokenResponse, oxdId := utils.GetTokens(getRequest)
+	requestParams := model.UserInfoRequestParams{oxdId,"",
+		tokenResponse.AccessToken}
+
+	request,connectionParam := getRequest(constants.GET_USER_INFO,requestParams)
 	var response transport.OxdResponse
 	var responseParams model.UserInfoResponseParams
 
@@ -32,5 +39,5 @@ func TestGetUserInfo(t *testing.T) {
 	//ASSERT
 	response.GetParams(&responseParams)
 	assert.Equal(t,constants.STATUS_OK,response.Status,"Status should be ok")
-	assert.NotEmpty(t,responseParams.Claims,"AccessToken should not be empty")
+	assert.NotEmpty(t,responseParams.Claims,"Claims should not be empty")
 }
