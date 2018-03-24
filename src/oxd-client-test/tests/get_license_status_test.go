@@ -12,14 +12,21 @@ import (
 	"github.com/stretchr/testify/assert"
 	"oxd-client/model/params/validation"
 	"oxd-client/model/transport"
-	"oxd-client-test/conf"
+	"oxd-client-test/utils"
 )
 
-func TestLicenseStatus(t *testing.T) {
+func TestSocketLicenseStatus(t *testing.T) {
+	executeLicenseStatusTest(t,utils.GetSocketRequest)
+}
+
+func TestRestLicenseStatus(t *testing.T) {
+	executeLicenseStatusTest(t,utils.GetRestRequest)
+}
+
+func executeLicenseStatusTest(t *testing.T, getRequest utils.GetRequest) {
 	//BEFORE
 	requestParams := validation.LicenseStatusRequestParams{}
-	request := client.BuildOxdRequest(constants.LICENSE_STATUS,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.LICENSE_STATUS}
+	request, connectionParam := getRequest(constants.LICENSE_STATUS, requestParams)
 
 	var response transport.OxdResponse
 	var responseParams validation.LicenseStatusResponseParams

@@ -37,10 +37,6 @@ func executeUMATest(t *testing.T, getRequest utils.GetRequest) {
 	rptCheckAccessParams := utils.CheckAccess(setupParams.OxdId, rpt, "/ws/phone", "GET", getRequest)
 	assert.Equal(t, "granted", rptCheckAccessParams.Access, "Access should be denied")
 
-	//authorizeRpt(setupParams.OxdId,rpt,ticket)
-	//rptAuthCheckAccessParams := checkAccess(setupParams.OxdId,rpt,"/ws/phone", "GET",getRequest)
-	//assert.Equal(t,"granted",rptAuthCheckAccessParams.Access, "Access should be denied")
-
 	introspectResponse := introspectRpt(setupParams.OxdId, rpt, getRequest)
 	assert.Equal(t, introspectResponse.Active, true)
 
@@ -72,19 +68,6 @@ func obtainRpt(oxdID string, ticket string, getRequest utils.GetRequest) string 
 
 	response.GetParams(&responseParams)
 	return responseParams.Rpt
-}
-
-func authorizeRpt(oxdID string, rpt string, ticket string) {
-	requestParams := uma.RpAuthorizeRptRequestParams{oxdID, rpt, ticket}
-	request := client.BuildOxdRequest(constants.RP_AUTHORIZE_RPT, requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host, transport.SOCKET, "", constants.RP_AUTHORIZE_RPT}
-
-	var response transport.OxdResponse
-	var responseParams uma.RpAuthorizeRptResponseParams
-
-	client.Send(request, connectionParam, &response)
-
-	response.GetParams(&responseParams)
 }
 
 func notProtectedError(oxdID string, rpt string, getRequest utils.GetRequest) transport.OxdResponse {
