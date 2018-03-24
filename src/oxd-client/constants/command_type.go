@@ -35,6 +35,7 @@ const (
 	RP_GET_GAT       CommandType = "uma_rp_get_gat"
 	RP_AUTHORIZE_RPT CommandType = "uma_rp_authorize_rpt"
 	RP_GET_CLAIMS_GATHERING_URL CommandType = "uma_rp_get_claims_gathering_url"
+	INTROSPECT_RPT	 CommandType = "introspect_rpt"
 
 	// stateless
 	AUTHORIZATION_CODE_FLOW CommandType = "authorization_code_flow"

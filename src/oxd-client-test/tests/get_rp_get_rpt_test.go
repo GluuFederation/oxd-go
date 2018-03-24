@@ -13,15 +13,25 @@ import (
 	"oxd-client-test/utils"
 	"oxd-client/model/params/uma"
 	"oxd-client/model/transport"
-	"oxd-client-test/conf"
-)
+	)
 
-func TestRpGetRpt(t *testing.T) {
+func TestSocketRpGetRpt(t *testing.T) {
+	executeRpGetRptTest(t,utils.GetSocketRequest)
+}
+
+func TestRestRpGetRpt(t *testing.T) {
+	executeRpGetRptTest(t,utils.GetRestRequest)
+}
+
+func executeRpGetRptTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
+	setupParams := utils.SetupClient()
+	utils.ProtectRs(setupParams.OxdId, getRequest)
+	checkAccessParams := utils.CheckAccess(setupParams.OxdId,"", "/ws/phone", "GET", getRequest)
 	requestParams := uma.RpGetRptRequestParams{}
-	requestParams.OxdId = utils.RegisterClient("")
-	request := client.BuildOxdRequest(constants.RP_GET_RPT,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RP_GET_RPT}
+	requestParams.OxdId = setupParams.OxdId
+	requestParams.Ticket = checkAccessParams.Ticket
+	request,connectionParam := getRequest(constants.RP_GET_RPT,requestParams)
 
 	var response transport.OxdResponse
 	var responseParams uma.RpGetRptResponseParams
