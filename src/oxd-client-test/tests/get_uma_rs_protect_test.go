@@ -17,13 +17,22 @@ import (
 	"oxd-client/model/params/uma/protect"
 )
 
-func TestRsProtect(t *testing.T) {
-	//BEFORE
-	requestParams := uma.RsProtectRequestParams{utils.RegisterClient(""), []protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}},""}
-	requestParams.OxdId = utils.RegisterClient("")
-	request := client.BuildOxdRequest(constants.RS_PROTECT,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.RS_PROTECT}
+func TestSocketUMARsProtect(t *testing.T) {
+	executeUMARsProtectTest(t,utils.GetSocketRequest)
+}
 
+func TestRestUMARsProtect(t *testing.T) {
+	executeUMARsProtectTest(t,utils.GetRestRequest)
+}
+
+func executeUMARsProtectTest(t *testing.T,getRequest utils.GetRequest) {
+	//BEFORE
+	oxdId := utils.RegisterClientSite(getRequest)
+	requestParams := uma.RsProtectRequestParams{oxdId,
+	[]protect.RsResource{ protect.RsResource{conf.TestConfiguration.Path, conf.TestConfiguration.Condition}},
+	""}
+
+	request,connectionParam := getRequest(constants.RS_PROTECT,requestParams)
 	var response transport.OxdResponse
 	var responseParams uma.RsProtectResponseParams
 
