@@ -18,19 +18,19 @@ import (
 func LogoutUrlPageSite(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session conf.SessionVars, accesstoken string,globalvariables conf.GlobalVars) {
 	var oxdResponse transport.OxdResponse
 	ConnectionType := globalvariables.ConnectionType
-	HttpRestUrl := globalvariables.Httpresturl 
+	//HttpRestUrl := globalvariables.Httpresturl
 	if(ConnectionType == "local") {
-	page.CallOxdServer(
+		service.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_LOGOUT_URI,  
 			model.LogoutUrlRequestParams{OxdId: session.OxdId,ProtectionAccessToken : accesstoken, IdTokenHint: session.IdToken, PostLogoutRedirectUri: "",State: session.State,SessionState: ""}),
 		&oxdResponse,
-		globalvariables.Host)
+		transport.OxdConnectionParam{})
 	} else {
-        page.CallOxdHttpsExtension(
-			client.BuildOxdRequest(constants.GET_LOGOUT_URI,
-				model.LogoutUrlRequestParams{OxdId: session.OxdId,ProtectionAccessToken : accesstoken, IdTokenHint: session.IdToken, PostLogoutRedirectUri: "",State: session.State,SessionState: ""}),
-			&oxdResponse,
-			HttpRestUrl)
+        //page.CallOxdHttpsExtension(
+			//client.BuildOxdRequest(constants.GET_LOGOUT_URI,
+			//	model.LogoutUrlRequestParams{OxdId: session.OxdId,ProtectionAccessToken : accesstoken, IdTokenHint: session.IdToken, PostLogoutRedirectUri: "",State: session.State,SessionState: ""}),
+			//&oxdResponse,
+			//HttpRestUrl)
 	}
 	var response model.LogoutUrlResponseParams
 	oxdResponse.GetParams(&response)

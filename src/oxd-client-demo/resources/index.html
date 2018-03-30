@@ -3,43 +3,76 @@
 <head>
     <meta charset="utf-8">
     <title>oxd-go demo</title>
-    <link rel="stylesheet" type="text/css" href="css\bootstrap-theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="css\bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="css\bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css\bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/site.css" />
     <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
-   
+    <script src="js/lib/angular.min.js"></script>
+    <script src="demo.js"></script>
+
    
 </head>
 <body>
-<div class="jumbotron"><h1>Gluu oxd GO Application</h1></div>   
-
-
-
-<form name="gluu-form" action="" method="post">
-        <br><br>
-        <div runat="server" id="formLogin" style="display:none" class="jumbotron">
-            <div class="form-group">
-                <label for="username">User Name</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter UserName" />
+<h2>
+    Gluu oxd GO Application Demo
+</h2>
+<div class="container-fluid" ng-app="demo">
+    <div class="row">
+        <div ng-include="'pages/settings.html'"></div>
+        <div ng-include="'pages/site-management.html'"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="content">
+            <h3>
+                OpenID Connect Flow
+            </h3>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="text" class="form-control" id="password" name="password" placeholder="Enter Password" />
+        </div>
+        <div class="col-md-6">
+            <div class="content">
+            <h3>
+                UMA Flow
+            </h3>
             </div>
-            <input type="button" name="Login" value="Login" class="btn btn-info">
-
         </div>
-        <div runat="server" id="openIDLogin">
-                <a href="/authUrl" name="OpenIDLogin" value="Login by OpenID Provider" id="OpenIDLogin" class="btn btn-success">Login by OpenID Provider</a> 
-            <!-- <button type="button" name="OpenIDLogin" value="Login by OpenID Provider" id="OpenIDLogin" class="btn btn-success">Login by OpenID Provider</button> -->
-            <br><br>
-        </div>
-        <input type="radio" name="loginMode" id="openid" value="openid" checked class="rbLoginType"> Login by OpenID Provider<br>
-        <input type="radio" name="loginMode" id="loginform" value="loginform" class="rbLoginType"> Show Login form
+    </div>
+    <div class="row">
 
-    </form><br /><br /><br /><br /><br />
-    <a href="/settings.html" class="btn btn-default">Settings</a>
-    <a href="/UMA.html" class="btn btn-default">UMA</a>
+
+    </div>
+</div>
+
+
+
+{{/*<div class="jumbotron"><h1>Gluu oxd GO Application</h1></div>   */}}
+
+
+
+{{/*<form name="gluu-form" action="" method="post">*/}}
+        {{/*<br><br>*/}}
+        {{/*<div runat="server" id="formLogin" style="display:none" class="jumbotron">*/}}
+            {{/*<div class="form-group">*/}}
+                {{/*<label for="username">User Name</label>*/}}
+                {{/*<input type="text" class="form-control" id="username" name="username" placeholder="Enter UserName" />*/}}
+            {{/*</div>*/}}
+            {{/*<div class="form-group">*/}}
+                {{/*<label for="password">Password</label>*/}}
+                {{/*<input type="text" class="form-control" id="password" name="password" placeholder="Enter Password" />*/}}
+            {{/*</div>*/}}
+            {{/*<input type="button" name="Login" value="Login" class="btn btn-info">*/}}
+
+        {{/*</div>*/}}
+        {{/*<div runat="server" id="openIDLogin">*/}}
+                {{/*<a href="/authUrl" name="OpenIDLogin" value="Login by OpenID Provider" id="OpenIDLogin" class="btn btn-success">Login by OpenID Provider</a> */}}
+            {{/*<!-- <button type="button" name="OpenIDLogin" value="Login by OpenID Provider" id="OpenIDLogin" class="btn btn-success">Login by OpenID Provider</button> -->*/}}
+            {{/*<br><br>*/}}
+        {{/*</div>*/}}
+        {{/*<input type="radio" name="loginMode" id="openid" value="openid" checked class="rbLoginType"> Login by OpenID Provider<br>*/}}
+        {{/*<input type="radio" name="loginMode" id="loginform" value="loginform" class="rbLoginType"> Show Login form*/}}
+
+    {{/*</form><br /><br /><br /><br /><br />*/}}
+    {{/*<a href="/settings.html" class="btn btn-default">Settings</a>*/}}
+    {{/*<a href="/UMA.html" class="btn btn-default">UMA</a>*/}}
 </body>
 </html>

@@ -25,18 +25,18 @@ func CheckAccessPage(w http.ResponseWriter, r *http.Request, configuration conf.
    requestParams.HttpMethod = "GET"
    requestParams.ProtectionAccessToken = accesstoken
    ConnectionType := globalvariables.ConnectionType
-   HttpRestUrl := globalvariables.Httpresturl 
+   //HttpRestUrl := globalvariables.Httpresturl
    if(ConnectionType == "local") {
-   page.CallOxdServer(
+	   service.CallOxdServer(
 	client.BuildOxdRequest(constants.RS_CHECK_ACCESS,requestParams),
 	&oxdResponse,
-	globalvariables.Host)
+	   transport.OxdConnectionParam{})
    } else {
-	page.CallOxdHttpsExtension(
-		client.BuildOxdRequest(constants.RS_CHECK_ACCESS,
-			requestParams),
-		&oxdResponse,
-		HttpRestUrl)
+	//page.CallOxdHttpsExtension(
+	//	client.BuildOxdRequest(constants.RS_CHECK_ACCESS,
+	//		requestParams),
+	//	&oxdResponse,
+	//	HttpRestUrl)
    }
 	var response uma.RsCheckAccessResponseParams
 	oxdResponse.GetParams(&response)

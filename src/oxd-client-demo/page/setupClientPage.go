@@ -1,7 +1,7 @@
 package page
 
 import (
-	"fmt"
+	//"fmt"
 	"net/http"
     "oxd-client-demo/conf"
 	"oxd-client/model/params/registration"
@@ -23,26 +23,26 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.
 	request.Scope = globalvariables.Scope
 	request.OpHost = r.FormValue("OphostId")
 	request.ClientId = r.FormValue("Clientid")
-	request.GrantType = globalvariables.GrantType
+	//request.GrantType = globalvariables.GrantType
 	request.ClientName = r.FormValue("Client_name")
 	request.ClientSecret = r.FormValue("Clientsecret")
 	request.AuthorizationRedirectUri = r.FormValue("RedirectUrl")
 	request.PostLogoutRedirectUri = r.FormValue("PostLogoutRedirectUrl")
-	OxdHost := fmt.Sprint(configuration.Host+":"+r.FormValue("OxdPort"))
+	//OxdHost := fmt.Sprint(configuration.Host+":"+r.FormValue("OxdPort"))
 	ConnectionType := r.FormValue("Connectiontype")
 	HttpRestUrl := r.FormValue("Httpresturl")
 	
 
 	if(ConnectionType == "local") {
-			page.CallOxdServer(
+		service.CallOxdServer(
 				client.BuildOxdRequest(constants.SETUP_CLIENT,request),
 				&oxdResponse,
-				OxdHost)
+				transport.OxdConnectionParam{})
 	} else {
-			page.CallOxdHttpsExtension(
-				client.BuildOxdRequest(constants.SETUP_CLIENT,request),
-				&oxdResponse,
-				HttpRestUrl)
+			//page.CallOxdHttpsExtension(
+			//	client.BuildOxdRequest(constants.SETUP_CLIENT,request),
+			//	&oxdResponse,
+			//	HttpRestUrl)
 
 			}
 
@@ -62,11 +62,11 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, configuration conf.
 	savesettings.ClientSecret = response.ClientSecret
 	savesettings.ConnectionType = r.FormValue("Connectiontype")
 	savesettings.PostLogoutRedirectUri = request.PostLogoutRedirectUri
-	savesettings.Scope = configuration.RegisterSiteRequestParams.Scope
+	//savesettings.Scope = configuration.RegisterSiteRequestParams.Scope
 	savesettings.OpHost = request.OpHost 
 	savesettings.AuthorizationRedirectUri = request.AuthorizationRedirectUri
-	savesettings.GrantType = configuration.RegisterSiteRequestParams.GrantType
-	savesettings.ResponseTypes = configuration.RegisterSiteRequestParams.ResponseTypes
+	//savesettings.GrantType = configuration.RegisterSiteRequestParams.GrantType
+	//savesettings.ResponseTypes = configuration.RegisterSiteRequestParams.ResponseTypes
     savesettings.HttpRestUrl = HttpRestUrl
 	utils.SaveoxdSetting(w,savesettings)
 	

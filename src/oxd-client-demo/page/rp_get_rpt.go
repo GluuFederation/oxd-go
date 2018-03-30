@@ -23,17 +23,17 @@ func RpGetRptPage(w http.ResponseWriter, r *http.Request, configuration conf.Con
     requestParams.Ticket = session.UMATicket 
 	requestParams.ProtectionAccessToken = accesstoken
 	ConnectionType := globalvariables.ConnectionType
-	HttpRestUrl := globalvariables.Httpresturl 
+	//HttpRestUrl := globalvariables.Httpresturl
 	if(ConnectionType == "local") {
-    page.CallOxdServer(
+		service.CallOxdServer(
 	client.BuildOxdRequest(constants.RP_GET_RPT,requestParams),
 	&oxdResponse,
-	globalvariables.Host)
+		transport.OxdConnectionParam{})
 	} else {
-		page.CallOxdHttpsExtension(
-			client.BuildOxdRequest(constants.RP_GET_RPT,requestParams),
-			&oxdResponse,
-			HttpRestUrl)
+		//page.CallOxdHttpsExtension(
+		//	client.BuildOxdRequest(constants.RP_GET_RPT,requestParams),
+		//	&oxdResponse,
+		//	HttpRestUrl)
 	}
 	var response uma.RpGetRptResponseParams
 	oxdResponse.GetParams(&response)

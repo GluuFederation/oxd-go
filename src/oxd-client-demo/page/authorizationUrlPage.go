@@ -32,20 +32,20 @@ func AuthorizationUrlPageSite(w http.ResponseWriter, r *http.Request, configurat
 	row.OxdId = globalvariables.Oxdid
 	row.ProtectionAccessToken = accesstoken
 	ConnectionType := globalvariables.ConnectionType
-	HttpRestUrl := globalvariables.Httpresturl 
+	//HttpRestUrl := globalvariables.Httpresturl
 
 	if(ConnectionType == "local") {
-	page.CallOxdServer(
+		service.CallOxdServer(
 		client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,
 			row),
 		&oxdResponse,
-		globalvariables.Host)
+		transport.OxdConnectionParam{})
 		} else {
-            page.CallOxdHttpsExtension(
-				client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,
-					row),
-				&oxdResponse,
-				HttpRestUrl)
+            //page.CallOxdHttpsExtension(
+				//client.BuildOxdRequest(constants.GET_AUTHORIZATION_URL,
+				//	row),
+				//&oxdResponse,
+				//HttpRestUrl)
 
 		}
 

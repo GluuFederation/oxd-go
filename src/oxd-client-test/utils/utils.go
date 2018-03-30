@@ -36,6 +36,7 @@ import (
 	//"net/http"
 	"net/http"
 	"net/http/cookiejar"
+	"oxd-client/utils"
 )
 
 type GetRequest func(command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam)
@@ -210,12 +211,7 @@ func GetAuthorizationUrl(getRequest GetRequest) (string, urlParam.AuthorizationU
 
 
 func GetSocketRequest (command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
-	request := client.BuildOxdRequest(command,params)
-	connectionParam := transport.OxdConnectionParam {conf.TestConfiguration.Host,
-	transport.SOCKET,
-	"",
-	command}
-	return request, connectionParam
+	return utils.GetRequest(conf.TestConfiguration.Host,transport.SOCKET,command,params)
 }
 
 func GetRestRequest (command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
@@ -223,12 +219,8 @@ func GetRestRequest (command constants.CommandType, params transport.Param) (tra
 	if(command != constants.GET_CLIENT_TOKEN && command != constants.SETUP_CLIENT){
 		accesstoken = GetClientToken(GetRestRequest)
 	}
-	request := client.BuildOxdRequest(command,params)
-	connectionParam := transport.OxdConnectionParam {conf.TestConfiguration.OxdHttpsHost,
-	transport.REST,
-	accesstoken,
-	command}
-
+	request, connectionParam := utils.GetRequest(conf.TestConfiguration.Host,transport.REST,command,params)
+	connectionParam.AccessToken = accesstoken
 	return request, connectionParam
 }
 

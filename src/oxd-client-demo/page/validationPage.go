@@ -24,12 +24,12 @@ func ValidationPageSite(w http.ResponseWriter, r *http.Request, configuration co
 func validateIdToken(w http.ResponseWriter, configuration conf.Configuration, session conf.SessionVars){
 	var oxdResponse transport.OxdResponse
 
-	page.CallOxdServer(
+	service.CallOxdServer(
 		client.BuildOxdRequest(constants.CHECK_ID_TOKEN,
 			validation.CheckIdTokenRequestParams{session.OxdId,
 				session.IdToken}),
 		&oxdResponse,
-		configuration.Host)
+		transport.OxdConnectionParam{})
 
 	var response validation.CheckIdTokenResponseParams
 	oxdResponse.GetParams(&response)
@@ -39,12 +39,12 @@ func validateIdToken(w http.ResponseWriter, configuration conf.Configuration, se
 func validateAccessToken(w http.ResponseWriter, configuration conf.Configuration, session conf.SessionVars){
 	var oxdResponse transport.OxdResponse
 
-	page.CallOxdServer(
+	service.CallOxdServer(
 		client.BuildOxdRequest(constants.CHECK_ACCESS_TOKEN,
 			validation.CheckAccessTokenRequestParams{session.OxdId,
 				session.IdToken, session.AccessToken}),
 		&oxdResponse,
-		configuration.Host)
+		transport.OxdConnectionParam{})
 
 	var response validation.CheckAccessTokenResponseParams
 	oxdResponse.GetParams(&response)
