@@ -11,7 +11,7 @@ import (
 
 func GetClientTokenPageSite(configuration *conf.Configuration) string {
 
-	requestParams := model.GetClientTokenRequestParams{configuration.RegisterSiteParams.OxdId,
+	requestParams := model.GetClientTokenRequestParams{"",
 		configuration.ClientId,
 		configuration.ClientSecret,
 		configuration.IdpHost,

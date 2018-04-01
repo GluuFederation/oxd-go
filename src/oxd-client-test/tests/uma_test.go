@@ -7,7 +7,7 @@ package tests
 
 import (
 	"github.com/stretchr/testify/assert"
-	"oxd-client-test/conf"
+	//"oxd-client-test/conf"
 	"oxd-client-test/utils"
 	"oxd-client/client"
 	"oxd-client/constants"

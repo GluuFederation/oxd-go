@@ -1,0 +1,74 @@
+<div class="col-md-6" ng-controller="openIdConnect as vm">
+    <div class="content">
+        <h3>
+            Open Id Connect Flow
+        </h3>
+        <table>
+            <tr>
+                <td>
+                    <label>Autherization URL</label>
+                </td>
+                <td>
+                    <a ng-href="{{vm.openIdConnect.AuthorizationUrl}}">{{vm.openIdConnect.AuthorizationUrl}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Code</label>
+                </td>
+                <td>
+                    {{vm.openIdConnect.Code}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Id Token</label>
+                </td>
+                <td>
+                {{vm.openIdConnect.IdToken}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Access Token</label>
+                </td>
+                <td>
+                {{vm.openIdConnect.AccessToken}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Refresh Token</label>
+                </td>
+                <td>
+                {{vm.openIdConnect.RefreshToken}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>User Info</label>
+                </td>
+                <td>
+                    <pre>
+                {{vm.claims}}
+                    </pre>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Logout url</label>
+                </td>
+                <td>
+                    <a ng-href="{{vm.openIdConnect.LogoutUrl}}">{{vm.openIdConnect.LogoutUrl}}</a>
+                </td>
+            </tr>
+
+        </table>
+        <br/>
+        <button ng-click="vm.getAuthorizationUrl()">Get Authorization URL</button>
+        <button ng-click="vm.getTokens()">Get Token & Refresh Token</button>
+        <button ng-click="vm.refreshTokens()">Refresh Tokens</button>
+        <button ng-click="vm.getUserInfo()">Get User Data</button>
+        <button ng-click="vm.getLogoutUrl()">Get Logout Url</button>
+    </div>
+</div>

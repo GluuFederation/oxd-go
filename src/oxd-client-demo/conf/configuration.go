@@ -25,8 +25,22 @@ type Configuration struct{
 	Type string `toml:"type"`
 	Condition []protect.Condition `toml:"condition"`
 	AccessToken string
+	SetupClient bool
+	ClientOxdId string
 
 	RegisterSiteParams RegisterSiteParams `toml:"registerSiteParams"`
+	OpenIdConnect OpenIdConnect
+}
+
+type OpenIdConnect struct {
+	AuthorizationUrl string
+	Code string
+	State string
+	IdToken string
+	AccessToken string
+	RefreshToken string
+	Claims map[string] []string
+	LogoutUrl string
 }
 
 type RegisterSiteParams struct{
@@ -56,6 +70,6 @@ type RegisterSiteParams struct{
 	ClaimsLocales  []string  `toml:"claimsLocales"`
 	ClaimsRedirectUri  []string  `toml:"claimsRedirectUri"`
 	AcrValues  []string  `toml:"acrValues"`
-	GrantTypes  []string  `toml:"grantTypes"`
+	GrantTypes  []string  `toml:"grantType"`
 	Contacts []string  `toml:"contacts"`
 }

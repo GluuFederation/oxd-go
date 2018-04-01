@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"io"
-	"fmt"
+	"oxd-client-demo/utils"
 )
 
 func GetSettingsSite(w http.ResponseWriter, r *http.Request, configuration conf.Configuration, session conf.SessionVars )  {
@@ -15,15 +15,5 @@ func GetSettingsSite(w http.ResponseWriter, r *http.Request, configuration conf.
 }
 
 func PostSettingsSite(w http.ResponseWriter, r *http.Request, configuration *conf.Configuration, session conf.SessionVars )  {
-	if r.Body == nil {
-		http.Error(w, "Please send a request body", 400)
-		return
-	}
-
-	err := json.NewDecoder(r.Body).Decode(configuration)
-	if err != nil {
-		fmt.Println(err)
-		http.Error(w, err.Error(), 400)
-		return
-	}
+	utils.ParseResponse(w,r,configuration)
 }

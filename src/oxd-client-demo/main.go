@@ -16,6 +16,7 @@ import (
 	"strings"
 	"oxd-client-demo/conf"
 	"oxd-client-demo/page"
+	"encoding/json"
 )
 
 
@@ -56,7 +57,7 @@ var oxdSettingsInterface interface{}
 //	for i := range GrantTypeInterfaceType {
 //		GrantTypeStringArray[i] = GrantTypeInterfaceType[i].(string)
 //	}
-//	globalvariables.GrantType = GrantTypeStringArray
+//	globalvariables.GrantTypes = GrantTypeStringArray
 //	globalvariables.Host = fmt.Sprint(globalvariables.OxdHost+":"+globalvariables.OxdPort)
 //}
 //func GetTemplate(name string) *template.Template{
@@ -178,6 +179,43 @@ func main() {
 
 	http.HandleFunc("/registerSite", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(page.RegisterClientSite(&serverConf)))
+	})
+
+	http.HandleFunc("/updateSite", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.UpdateClientSite(w,r,&serverConf)))
+	})
+
+	http.HandleFunc("/setupClient", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.SetupClientPage(w,r,&serverConf)))
+	})
+
+	http.HandleFunc("/removeSite", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.RemoveClientSite(&serverConf)))
+	})
+
+	http.HandleFunc("/authorizationUrl", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.GetAuthorizationUrlPage(&serverConf)))
+	})
+
+	http.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		page.ReadCode(w,r,&serverConf)
+	})
+
+	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.GetTokenWithCode(&serverConf)))
+	})
+
+	http.HandleFunc("/refresh", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.GetTokenWithRefreshToken(&serverConf)))
+	})
+
+	http.HandleFunc("/userInfo", func(w http.ResponseWriter, r *http.Request) {
+		data,_ :=json.Marshal(page.GetUserInfo(&serverConf))
+		w.Write(data)
+	})
+
+	http.HandleFunc("/logoutUrl", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.GetLogoutUrl(&serverConf)))
 	})
 
 	http.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {

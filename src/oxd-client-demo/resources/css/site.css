@@ -36,9 +36,52 @@ textarea {
 
 table{
     width:100%;
+    table-layout: fixed;
+}
+
+td:nth-child(2) {
+    width: 80%;
+}
+
+td{
+    vertical-align: text-top;
+    word-wrap: break-word;
 }
 
 input[type=text]{
     width:100%;
     min-width:100%;
 }
+
+button {
+    width:100%;
+    margin-bottom: 10px;
+}
+
+a{
+    word-wrap: break-word;
+}
+
+header{
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 5.6rem;
+    -webkit-transition: background-color .25s;
+    transition: background-color .25s;
+    background-color: #1AB26B;
+    color: #fff;
+    z-index: 1;
+}
+
+.container-fluid{
+    margin-top: 70px;
+}
+
+h2{
+    margin-top: 10px;
+    margin-left: 20px;
+}
+

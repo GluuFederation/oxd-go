@@ -23,12 +23,12 @@ type UpdateSiteRequestParams struct {
 	ClientRequestUris             []string  `json:"client_request_uris,omitempty"`
 	ClientSecretExpiresAt         time.Time  `json:"client_secret_expires_at,omitempty"`
 
-	Scope                         []string  `json:"scope"`
-	UiLocales                     []string  `json:"ui_locales,omitempty"`
-	ClaimsLocales                 []string  `json:"claims_locales,omitempty"`
-	AcrValues                     []string  `json:"acr_values"`
-	GrantType                     []string  `json:"grant_types"`
-	Contacts                      []string  `json:"contacts,omitempty"`
+	Scope         []string `json:"scope"`
+	UiLocales     []string `json:"ui_locales,omitempty"`
+	ClaimsLocales []string `json:"claims_locales,omitempty"`
+	AcrValues     []string `json:"acr_values"`
+	GrantTypes    []string `json:"grant_types"`
+	Contacts      []string `json:"contacts,omitempty"`
 }
 
 type UpdateSiteResponseParams struct {

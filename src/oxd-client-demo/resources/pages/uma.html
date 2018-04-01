@@ -1,0 +1,21 @@
+<div class="col-md-6" ng-controller="uma as vm">
+    <div class="content">
+        <h3>
+            UMA flow
+        </h3>
+        <table>
+            <tr>
+                <td>
+                    <label>Oxd host</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.Host">
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <button ng-click="vm.setSettings()">Save</button>
+        <button ng-click="vm.getSetupClient()">Setup client</button>
+        <button ng-click="vm.getClientToken()">Get client token</button>
+    </div>
+</div>

@@ -36,7 +36,7 @@ import (
 	//"net/http"
 	"net/http"
 	"net/http/cookiejar"
-	"oxd-client/utils"
+	//"oxd-client/utils"
 )
 
 type GetRequest func(command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam)
@@ -114,7 +114,7 @@ func PrepareUpdateParams()  model.UpdateSiteRequestParams {
 	requestParams.PostLogoutRedirectUri = conf.TestConfiguration.PostLogoutRedirectUrl
 	requestParams.AcrValues = make([]string,0)
 	requestParams.Scope = []string{"openid", "profile","uma_protection","uma_authorization"}
-	requestParams.GrantType = []string{"authorization_code"}
+	requestParams.GrantTypes = []string{"authorization_code"}
 	requestParams.ResponseTypes = []string{"code"}
 	requestParams.ClientId = setupResponse.ClientId
 	requestParams.ClientSecret = setupResponse.ClientSecret
@@ -211,7 +211,7 @@ func GetAuthorizationUrl(getRequest GetRequest) (string, urlParam.AuthorizationU
 
 
 func GetSocketRequest (command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
-	return utils.GetRequest(conf.TestConfiguration.Host,transport.SOCKET,command,params)
+	return BuildRequest(conf.TestConfiguration.Host,transport.SOCKET,command,params)
 }
 
 func GetRestRequest (command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
@@ -219,7 +219,7 @@ func GetRestRequest (command constants.CommandType, params transport.Param) (tra
 	if(command != constants.GET_CLIENT_TOKEN && command != constants.SETUP_CLIENT){
 		accesstoken = GetClientToken(GetRestRequest)
 	}
-	request, connectionParam := utils.GetRequest(conf.TestConfiguration.Host,transport.REST,command,params)
+	request, connectionParam := BuildRequest(conf.TestConfiguration.OxdHttpsHost,transport.REST,command,params)
 	connectionParam.AccessToken = accesstoken
 	return request, connectionParam
 }
@@ -287,4 +287,14 @@ func RegisterClientSite(getRequest GetRequest) string{
 
 	response.GetParams(&responseParams)
 	return responseParams.OxdId
+}
+
+func BuildRequest (address string, requestType transport.REQUEST_TYPE, command constants.CommandType, params transport.Param) (transport.OxdRequest, transport.OxdConnectionParam){
+	request := client.BuildOxdRequest(command,params)
+	connectionParam := transport.OxdConnectionParam {
+		address,
+		requestType,
+		"",
+		command}
+	return request, connectionParam
 }

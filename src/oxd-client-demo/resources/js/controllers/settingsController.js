@@ -31,5 +31,13 @@ function settingsController($scope, $http) {
         });
     }
 
+    vm.getSetupClient = function () {
+        $http.get('/setupClient').then(function (value) {
+            vm.getSettings();
+        }, function (reason) {
+            alert(reason);
+        });
+    }
+
     vm.getSettings();
 }

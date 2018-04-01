@@ -69,9 +69,18 @@
                     <label>{{vm.settings.AccessToken}}</label>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <label>Client Oxd Id</label>
+                </td>
+                <td>
+                    <label>{{vm.settings.ClientOxdId}}</label>
+                </td>
+            </tr>
         </table>
         <br/>
         <button ng-click="vm.setSettings()">Save</button>
+        <button ng-click="vm.getSetupClient()">Setup client</button>
         <button ng-click="vm.getClientToken()">Get client token</button>
     </div>
 </div>
