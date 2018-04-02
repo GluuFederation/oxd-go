@@ -30,6 +30,30 @@ type Configuration struct{
 
 	RegisterSiteParams RegisterSiteParams `toml:"registerSiteParams"`
 	OpenIdConnect OpenIdConnect
+	Uma Uma `toml:"uma"`
+}
+
+
+type Uma struct {
+	Resources []UmaResources `toml:"resources"`
+	ResourcesOxdId string
+	CheckAccessPath string `toml:"checkAccessPath"`
+	CheckAccessMethod string `toml:"checkAccessMethod"`
+	Ticket string
+	Rpt string
+	ClaimsUrl string
+	IntrospectRpt interface{}
+}
+
+type UmaResources struct {
+	Path string `toml:"path"`
+	Conditions []UmaConditions `toml:"conditions"`
+}
+
+type UmaConditions struct {
+	HttpMethods []string `toml:"httpMethods"`
+	Scopes []string `toml:"scopes"`
+	TicketScopes []string `toml:"ticketScopes"`
 }
 
 type OpenIdConnect struct {

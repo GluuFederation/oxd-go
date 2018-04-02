@@ -13,26 +13,30 @@ clientId="@!E77D.AB59.5C1D.D971!0001!EAFB.EC9C!0008!8EF1.EB4C.BEF4.BEA1"
 clientSecret="zaq1@WSX"
 clientRegistrationClientUri="https://idp.example.com/identity/"
 type="REST"
-
-path="/scim"
 oxdHttpsHost="https://oxd.example.com:8443"
-[[condition]]
-httpMethods=["GET"]
-scopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
-ticketScopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
+loglevel = "debug"
 
-[[condition]]
+[uma]
+checkAccessPath="/test"
+checkAccessMethod="GET"
+[[uma.resources]]
+path="/test"
+[[uma.resources.conditions]]
+httpMethods=["GET"]
+scopes=["http://photoz.example.com/dev/actions/view"]
+
+[[uma.resources.conditions]]
 httpMethods=["PUT", "POST"]
 scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/add"]
 ticketScopes=["http://photoz.example.com/dev/actions/add"]
 
-[[condition]]
+[[uma.resources.conditions]]
 httpMethods=["DELETE"]
 scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/remove"]
 ticketScopes=["http://photoz.example.com/dev/actions/remove"]
 
 
-loglevel = "debug"
+
 
 [registerSiteParams]
 
@@ -56,6 +60,7 @@ clientSectorIdentifierUri = ""
 scope = ["openid", "profile", "uma_protection", "uma_authorization"]
 uiLocales  = []
 claimsLocales  = []
+claimsRedirectUri = ["https://client.example.com:8080/claimsRedirect"]
 acrValues = []
 grantType = ["authorization_code"]
 contacts = ["example@example.com"]

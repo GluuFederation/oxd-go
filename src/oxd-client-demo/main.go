@@ -218,6 +218,27 @@ func main() {
 		w.Write([]byte(page.GetLogoutUrl(&serverConf)))
 	})
 
+	http.HandleFunc("/umaRsProtect", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.UmaRsProtect(&serverConf)))
+	})
+
+	http.HandleFunc("/umaCheckAccess", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.UmaCheckAccess(&serverConf)))
+	})
+
+	http.HandleFunc("/umaRpt", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.UmaGetRpt(&serverConf)))
+	})
+
+	http.HandleFunc("/umaClaimsUrl", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(page.UmaGetClaimsGathering(&serverConf)))
+	})
+
+	http.HandleFunc("/umaIntrospectRpt", func(w http.ResponseWriter, r *http.Request) {
+		data,_ :=json.Marshal(page.GetUserInfo(&serverConf))
+		w.Write(data)
+	})
+
 	http.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET":
