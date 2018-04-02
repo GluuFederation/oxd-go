@@ -1,4 +1,4 @@
-package page
+package service
 
 import (
 	"oxd-client-demo/conf"

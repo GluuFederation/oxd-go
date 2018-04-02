@@ -5,6 +5,7 @@
 //
 package model
 
+// Deprecated:
 type AuthorizationCodeRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	Username string `json:"username"`
@@ -14,7 +15,7 @@ type AuthorizationCodeRequestParams struct {
 	State string `json:"state"`
     
 }
-
+// Deprecated:
 type AuthorizationCodeResponseParams struct {
 	Code string `json:"code"`
 }

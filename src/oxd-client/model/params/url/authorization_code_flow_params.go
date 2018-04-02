@@ -4,7 +4,7 @@
 //  Date: 02/01/17
 //
 package model
-
+// Deprecated:
 type AuthorizationCodeFlowRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	RedirectUrl string `json:"redirect_url,omitempty"`
@@ -16,7 +16,7 @@ type AuthorizationCodeFlowRequestParams struct {
 	Nonce string `json:"nonce,omitempty"`
 	Acr string `json:"acr,omitempty"`
 }
-
+// Deprecated:
 type AuthorizationCodeFlowResponseParams struct {
 	AccessToken string `json:"access_token"`
 	ExpiresInSeconds int64 `json:"expires_in_seconds"`

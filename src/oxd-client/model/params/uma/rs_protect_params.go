@@ -9,7 +9,7 @@ import "oxd-client/model/params/uma/protect"
 
 type RsProtectRequestParams struct {
 	OxdId string `json:"oxd_id"`
-	Resources []protect.RsResource `json:"resources"`
+	Resources []protect.RsResource `json:"webapp"`
 	ProtectionAccessToken string `json:"protection_access_token"`
 }
 
