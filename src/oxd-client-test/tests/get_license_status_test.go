@@ -19,9 +19,9 @@ func TestSocketLicenseStatus(t *testing.T) {
 	executeLicenseStatusTest(t,utils.GetSocketRequest)
 }
 
-func TestRestLicenseStatus(t *testing.T) {
-	executeLicenseStatusTest(t,utils.GetRestRequest)
-}
+//func TestRestLicenseStatus(t *testing.T) {
+//	executeLicenseStatusTest(t,utils.GetRestRequest)
+//}
 
 func executeLicenseStatusTest(t *testing.T, getRequest utils.GetRequest) {
 	//BEFORE

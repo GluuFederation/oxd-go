@@ -9,14 +9,20 @@
                     <label>Uma resource</label>
                 </td>
                 <td>
-                    <table ng-repeat="resource in vm.uma.Resources">
+                    <table class="resource" ng-repeat="resource in vm.uma.Resources">
                         <tr><td><label>Path</label></td><td><input type="text"  ng-model="resource.Path"></td></tr>
                         <tr><td class="text-center" colspan="2"><label>Conditions</label></td></tr>
                         <tr><td colspan="2">
                             <table class="conditions" ng-repeat="condition in resource.Conditions">
                                 <tr><td><label>Http methods</label></td><td><input type="text" ng-model="condition.HttpMethods"></td></tr>
-                                <tr><td><label>Scopes</label></td><td><input type="text"  ng-model="condition.Scopes"></td></tr>
-                                <tr><td><label>Ticket scopes</label></td><td><input type="text"  ng-model="condition.TicketScopes"></td></tr>
+                                <tr ng-if="condition.Scopes"><td><label>Scopes</label></td><td><input type="text"  ng-model="condition.Scopes"></td></tr>
+                                <tr ng-if="condition.ScopeExpression.Rule"><td><label>Scope expression</label></td>
+                                    <td><label>Rule</label>
+                                        <pre>{{condition.ScopeExpression.Rule | prettyJSON}}</pre>
+                                        <label>Scopes</label>
+                                        <p ng-repeat="data in condition.ScopeExpression.Data">{{data}}</p>
+                                </tr>
+                                <tr ng-if="condition.TicketScopes"><td><label>Ticket scopes</label></td><td><input type="text"  ng-model="condition.TicketScopes"></td></tr>
                             </table>
 
                         </td></tr>

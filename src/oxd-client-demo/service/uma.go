@@ -8,6 +8,7 @@ import (
 	"oxd-client/model/params/uma/protect"
 	"oxd-client/model/transport"
 	"oxd-client-demo/utils"
+	"encoding/json"
 )
 
 func UmaRsProtect(conf *conf.Configuration) string  {
@@ -37,7 +38,13 @@ func prepareResources(conf conf.Configuration) []protect.RsResource{
 	for _,resource := range conf.Uma.Resources{
 		conditions := []protect.Condition{}
 		for _,condition := range resource.Conditions{
-			conditions = append(conditions, protect.Condition{condition.HttpMethods, condition.Scopes, condition.TicketScopes,nil})
+			responseCondition := protect.Condition{condition.HttpMethods, condition.Scopes, condition.TicketScopes, nil}
+			if(condition.ScopeExpression.Rule != ""){
+				var rule interface{}
+				json.Unmarshal([]byte(condition.ScopeExpression.Rule), &rule)
+				responseCondition.ScopeExpression = &protect.ScopeExpression{rule, condition.ScopeExpression.Data}
+			}
+			conditions = append(conditions, responseCondition)
 		}
 		resources = append(resources, protect.RsResource{resource.Path,conditions})
 	}

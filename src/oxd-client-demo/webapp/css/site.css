@@ -87,5 +87,15 @@ h2{
 
 .conditions{
     border-bottom: 2px solid;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.resource{
+    border: 1px solid;
+}
+
+.resource  td {
+    padding: 5px;
 }
 

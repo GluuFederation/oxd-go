@@ -69,3 +69,8 @@ function umaController($scope, $http) {
 
     vm.getSettings();
 }
+
+
+angular.module('demo').filter('prettyJSON', function () {
+    return function(json) { return JSON.stringify(JSON.parse(json), null, 2); }
+});

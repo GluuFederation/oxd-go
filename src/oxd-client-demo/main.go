@@ -106,7 +106,6 @@ func main() {
 	}
 
 	func init() {
-		//LoadoxdSetting()
 		 _, err := toml.DecodeFile("src/oxd-client-demo/conf/main.toml", &serverConf)
 		 utils.CheckError("transport.transport","Config file error newone",err)
 

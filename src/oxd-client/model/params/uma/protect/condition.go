@@ -5,12 +5,14 @@
 //
 package protect
 
-type ScopeExpression interface {}
-
-
 type Condition struct {
 	HttpMethods []string `json:"httpMethods"`
 	Scopes []string `json:"scopes"`
 	TicketScopes []string `json:"ticketScopes"`
-	ScopeExpression ScopeExpression `json:"scope_expression,omitempty"`
+	ScopeExpression *ScopeExpression `json:"scope_expression,omitempty"`
+}
+
+type ScopeExpression struct {
+	Rule interface{}`json:"rule"`
+	Data []string `json:"data"`
 }

@@ -54,6 +54,12 @@ type UmaConditions struct {
 	HttpMethods []string `toml:"httpMethods"`
 	Scopes []string `toml:"scopes"`
 	TicketScopes []string `toml:"ticketScopes"`
+	ScopeExpression ScopeExpression `toml:"scopeExpression"`
+}
+
+type ScopeExpression struct {
+	Rule string `toml:"rule"`
+	Data []string `toml:"data"`
 }
 
 type OpenIdConnect struct {

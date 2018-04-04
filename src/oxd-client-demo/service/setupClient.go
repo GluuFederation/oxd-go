@@ -30,7 +30,7 @@ func SetupClientPage(w http.ResponseWriter, r *http.Request, conf *conf.Configur
 }
 
 func prepareSetupParams(conf conf.Configuration)  model.SetupClientRequestParams {
-	var requestParams model.SetupClientRequestParams
+	var requestParams = model.GetSetupClientRequestParams()
 	requestParams.OpHost = conf.IdpHost
 	requestParams.AuthorizationRedirectUri = conf.RegisterSiteParams.RedirectUris[0]
 	requestParams.PostLogoutRedirectUri = conf.RegisterSiteParams.PostLogoutRedirectUri

@@ -25,6 +25,13 @@ type SetupClientRequestParams struct {
 	AcrValues  []string  `json:"acr_values"`
 	GrantTypes  []string  `json:"grant_types"`
 	Contacts []string  `json:"contacts"`
+	OxdRpProgrammingLanguage string  `json:"oxd_rp_programming_language"`
+}
+
+func GetSetupClientRequestParams() SetupClientRequestParams {
+	value := SetupClientRequestParams{}
+	value.OxdRpProgrammingLanguage = "GO"
+	return value
 }
 
 type SetupClientResponseParams struct {

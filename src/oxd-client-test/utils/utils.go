@@ -93,7 +93,7 @@ func PrepareRegisterParams(accessToken string)  model.RegisterSiteRequestParams 
 }
 
 func PrepareSetupParams()  model.SetupClientRequestParams {
-	var requestParams model.SetupClientRequestParams
+	var requestParams = model.GetSetupClientRequestParams()
 	requestParams.OpHost = conf.TestConfiguration.OpHost
 	requestParams.AuthorizationRedirectUri = conf.TestConfiguration.RedirectUrl
 	requestParams.PostLogoutRedirectUri = conf.TestConfiguration.PostLogoutRedirectUrl
