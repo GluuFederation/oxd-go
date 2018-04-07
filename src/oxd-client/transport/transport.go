@@ -8,7 +8,6 @@ package transport
 
 import (
 	"oxd-client/model/transport"
-	"log"
 	"github.com/juju/loggo"
 )
 
