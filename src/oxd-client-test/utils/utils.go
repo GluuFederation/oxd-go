@@ -45,7 +45,11 @@ type GetRequest func(command constants.CommandType, params transport.Param) (tra
 func RegisterClient(accessToken string) string{
 	requestParams := PrepareRegisterParams(accessToken)
 	request := client.BuildOxdRequest(constants.REGISTER_SITE,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.REGISTER_SITE}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,
+	transport.SOCKET,
+	"",
+	constants.REGISTER_SITE,
+	true}
 	var response transport.OxdResponse
 	var responseParams model.RegisterSiteResponseParams
 
@@ -132,7 +136,11 @@ func ExecCodeFlow() (urlParam.AuthorizationCodeFlowResponseParams,string){
 		conf.TestConfiguration.UserSecret,
 		conf.TestConfiguration.Scope,"",""}
 	request := client.BuildOxdRequest(constants.AUTHORIZATION_CODE_FLOW,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.AUTHORIZATION_CODE_FLOW}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,
+	transport.SOCKET,
+	"",
+	constants.AUTHORIZATION_CODE_FLOW,
+	true}
 
 	var response transport.OxdResponse
 	var responseParams urlParam.AuthorizationCodeFlowResponseParams
@@ -295,6 +303,7 @@ func BuildRequest (address string, requestType transport.REQUEST_TYPE, command c
 		address,
 		requestType,
 		"",
-		command}
+		command,
+		true}
 	return request, connectionParam
 }

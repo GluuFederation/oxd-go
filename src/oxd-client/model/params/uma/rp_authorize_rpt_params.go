@@ -1,8 +1,8 @@
-//
 //  Copyright Sagiton
 //  Author: Michał Kępkowski
 //  Date: 09/01/17
 //
+
 package uma
 
 // Deprecated:

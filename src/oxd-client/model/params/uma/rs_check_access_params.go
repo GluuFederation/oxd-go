@@ -1,10 +1,11 @@
-//
 //  Copyright Sagiton
 //  Author: Michał Kępkowski
 //  Date: 03/01/17
 //
+
 package uma
 
+// Check access request https://gluu.org/docs/oxd/3.1.2/api/#uma-rs-check-access
 type RsCheckAccessRequestParams struct {
 	OxdId                 string `json:"oxd_id"`
 	Rpt                   string `json:"rpt"`
@@ -13,6 +14,7 @@ type RsCheckAccessRequestParams struct {
 	ProtectionAccessToken string `json:"protection_access_token"`
 }
 
+// Check access response https://gluu.org/docs/oxd/3.1.2/api/#uma-rs-check-access
 type RsCheckAccessResponseParams struct {
 	Status                string `json:"status"`
 	Access                string `json:"access"`

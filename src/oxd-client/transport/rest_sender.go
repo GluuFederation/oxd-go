@@ -22,11 +22,12 @@ type AuthSuccess struct {
 
 }
 
+// function which sends request via REST
 func SendRest( request []byte, requestParam transport.OxdConnectionParam) []byte {
 
 	resty.SetTLSClientConfig(&tls.Config{InsecureSkipVerify:true})
 	resty.SetRedirectPolicy(resty.FlexibleRedirectPolicy(20))
-	resty.SetDebug(true)
+	resty.SetDebug(requestParam.Debug)
 
 	req:= resty.R().
 		SetHeader("Content-Type", "application/json").
@@ -43,49 +44,7 @@ func SendRest( request []byte, requestParam transport.OxdConnectionParam) []byte
 		return resp.Body()
 }
 
-//func SendRest( request []byte, address string,command constants.CommandType) []byte {
-//	var accesstoken = " "
-//	var requestInterface interface{}
-//	tr := &http.Transport{
-//		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-//		//, CipherSuites: []uint16{tls.TLS_RSA_WITH_AES_256_CBC_SHA}
-//		//},
-//	}
-//
-//	requeststring := string(request[:])
-//
-//	commandtype := fmt.Sprint(command)
-//	endpoint := fmt.Sprint(address+"/"+commandtype)
-//	endpointurl := strings.Replace(endpoint, "_","-", -1)
-//
-//	findaccesstoken := bytes.Index(request, []byte("protection_access_token"))
-//
-//	if (findaccesstoken != -1) {
-//		err := json.Unmarshal(request, &requestInterface)
-//		if err != nil {
-//			fmt.Println("error:", err)
-//		}
-//		requestValues := requestInterface.(map[string]interface{})
-//		accesstoken = requestValues["protection_access_token"].(string)
-//	}
-//	sendrequest, _ := http.NewRequest("POST", endpointurl, bytes.NewBufferString(requeststring))
-//	sendrequest.Header.Set("Content-Type", "application/json")
-//	if(accesstoken != "") {
-//		sendrequest.Header.Set("Authorization", "Bearer " + accesstoken)
-//	}
-//	sendrequest.Close = true
-//	sendrequest.Header.Set("Accept-Encoding", "identity")
-//
-//	client := &http.Client{Transport: tr}
-//	serveresponse, err := client.Do(sendrequest)
-//	if err != nil {
-//		fmt.Printf("The HTTP request failed with error %s\n", err)
-//	}
-//	response, err := ioutil.ReadAll(serveresponse.Body)
-//	defer serveresponse.Body.Close()
-//	return response
-//}
-
+// Function to get url from command type
 func getEndpointUrl (address string,command constants.CommandType) string {
 	commandtype := fmt.Sprint(command)
 	endpoint := fmt.Sprint(address+"/"+commandtype)

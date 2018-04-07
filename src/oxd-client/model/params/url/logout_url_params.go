@@ -1,10 +1,11 @@
-//
 //  Copyright Sagiton
 //  Author: Michał Kępkowski
 //  Date: 02/01/17
 //
+
 package model
 
+// Get logout url request https://gluu.org/docs/oxd/3.1.2/api/#get-logout-uri
 type LogoutUrlRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	ProtectionAccessToken string `json:"protection_access_token"`
@@ -14,6 +15,7 @@ type LogoutUrlRequestParams struct {
 	SessionState string `json:"session_state,omitempty"`
 }
 
+// Get logout url response https://gluu.org/docs/oxd/3.1.2/api/#get-logout-uri
 type LogoutUrlResponseParams struct {
 	Uri string `json:"uri"`
 

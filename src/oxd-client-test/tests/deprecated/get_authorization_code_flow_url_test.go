@@ -27,7 +27,7 @@ func TestGetAuthorizationCodeFlowUrl(t *testing.T) {
 		conf.TestConfiguration.UserSecret,
 		conf.TestConfiguration.Scope,"",""}
 	request := client.BuildOxdRequest(constants.AUTHORIZATION_CODE_FLOW,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN,true}
 
 	var response transport.OxdResponse
 	var responseParams model.AuthorizationCodeFlowResponseParams

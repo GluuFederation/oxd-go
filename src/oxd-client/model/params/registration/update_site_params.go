@@ -6,7 +6,7 @@
 package model
 
 import "time"
-
+// Update site request https://gluu.org/docs/oxd/3.1.2/api/#update-site
 type UpdateSiteRequestParams struct {
 	OxdId                         string `json:"oxd_id"`
 	AuthorizationRedirectUri      string `json:"authorization_redirect_uri"`
@@ -31,6 +31,7 @@ type UpdateSiteRequestParams struct {
 	Contacts      []string `json:"contacts,omitempty"`
 }
 
+// Update site response https://gluu.org/docs/oxd/3.1.2/api/#update-site
 type UpdateSiteResponseParams struct {
 	OxdId string `json:"oxd_id"`
 }

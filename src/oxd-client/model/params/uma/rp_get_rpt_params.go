@@ -1,10 +1,11 @@
-//
 //  Copyright Sagiton
 //  Author: Michał Kępkowski
 //  Date: 02/01/17
 //
+
 package uma
 
+// Get Rpt request https://gluu.org/docs/oxd/3.1.2/api/#uma-rp-get-rpt
 type RpGetRptRequestParams struct {
 	OxdId                 string   `json:"oxd_id"`
 	Ticket                string   `json:"ticket"`
@@ -17,6 +18,7 @@ type RpGetRptRequestParams struct {
 	ProtectionAccessToken string   `json:"protection_access_token"`
 }
 
+// Get Rpt response https://gluu.org/docs/oxd/3.1.2/api/#uma-rp-get-rpt
 type RpGetRptResponseParams struct {
 	Rpt              string       `json:"access_token"`
 	TokenType        string       `json:"token_type"`

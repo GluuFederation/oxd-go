@@ -1,5 +1,9 @@
+//  Author: Michał Kępkowski
+//  Date: 07.04.2018
+
 package model
 
+// Setup client request https://gluu.org/docs/oxd/3.1.2/api/#apis-used-to-setup-the-clientapplication
 type SetupClientRequestParams struct {
 
 	OpHost string  `json:"op_host"`
@@ -28,12 +32,14 @@ type SetupClientRequestParams struct {
 	OxdRpProgrammingLanguage string  `json:"oxd_rp_programming_language"`
 }
 
+// Costructor function which returnes SetupClientRequestParams with hardcoded Go language
 func GetSetupClientRequestParams() SetupClientRequestParams {
 	value := SetupClientRequestParams{}
 	value.OxdRpProgrammingLanguage = "GO"
 	return value
 }
 
+// Setup client request https://gluu.org/docs/oxd/3.1.2/api/#apis-used-to-setup-the-clientapplication
 type SetupClientResponseParams struct {
 	OxdId string `json:"oxd_id"`
 	OpHost string `json:"op_host"`

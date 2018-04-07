@@ -1,7 +1,9 @@
+//  Author: Michał Kępkowski
+//  Date: 07.04.2018
+
 package model
 
-// import "encoding/json"
-
+// Get Client Token request https://gluu.org/docs/oxd/3.1.2/api/#get-client-token
 type GetClientTokenRequestParams struct {
 	OxdId string `json:"oxd_id"`
 	ClientID string `json:"client_id"`
@@ -12,7 +14,7 @@ type GetClientTokenRequestParams struct {
 	
 }
 
-
+// Get Client Token response https://gluu.org/docs/oxd/3.1.2/api/#get-client-token
 type GetClientTokenResponseParams struct {
 	
 	Scope string `json:"scope"`

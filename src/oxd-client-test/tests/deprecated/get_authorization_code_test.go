@@ -24,7 +24,7 @@ func TestGetAuthorizationCode(t *testing.T) {
 		make([]string,0),
 		"",""}
 	request := client.BuildOxdRequest(constants.GET_AUTHORIZATION_CODE,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN, true}
 
 	var response transport.OxdResponse
 	var responseParams model.AuthorizationCodeResponseParams

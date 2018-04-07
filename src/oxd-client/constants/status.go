@@ -5,6 +5,7 @@
 //
 package constants
 
+// Status constants
 type Status string
 
 const (

@@ -21,7 +21,7 @@ func TestCheckIdToken(t *testing.T) {
 	codeResponse, oxdId := utils.ExecCodeFlow()
 	requestParams := validation.CheckIdTokenRequestParams{oxdId, codeResponse.IdToken}
 	request := client.BuildOxdRequest(constants.CHECK_ID_TOKEN,requestParams)
-	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN}
+	connectionParam := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ID_TOKEN, true}
 
 	var response transport.OxdResponse
 	var responseParams validation.CheckIdTokenResponseParams

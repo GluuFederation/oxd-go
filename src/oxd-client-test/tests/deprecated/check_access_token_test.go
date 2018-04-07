@@ -21,7 +21,7 @@ func TestCheckAccessToken(t *testing.T) {
 	codeResponse, oxdId := utils.ExecCodeFlow()
 	requestParams := validation.CheckAccessTokenRequestParams{oxdId, codeResponse.IdToken, codeResponse.AccessToken}
 	request := client.BuildOxdRequest(constants.CHECK_ACCESS_TOKEN,requestParams)
-	connectionParams := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ACCESS_TOKEN,}
+	connectionParams := transport.OxdConnectionParam{conf.TestConfiguration.Host,transport.SOCKET,"",constants.CHECK_ACCESS_TOKEN,true}
 	var response transport.OxdResponse
 	var responseParams validation.CheckAccessTokenResponseParams
 

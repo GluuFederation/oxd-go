@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// function which sends request via Socket
 func SendSocket( request []byte, address string) []byte {
 
 	conn := establishConnection(address)
@@ -20,6 +21,7 @@ func SendSocket( request []byte, address string) []byte {
 	return response
 }
 
+// Establishing connection
 func establishConnection(address string)  *net.TCPConn {
 	tcpAddr, err := net.ResolveTCPAddr("tcp4", address)
 	utils.CheckError("transport.transport","Cannot resolve ip address",err)

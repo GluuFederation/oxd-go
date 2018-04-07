@@ -3,8 +3,11 @@
 //  Author: Michał Kępkowski
 //  Date: 02/01/17
 //
+
+
 package model
 
+// Register site request https://gluu.org/docs/oxd/3.1.2/api/#register-site
 type RegisterSiteRequestParams struct {
 
 	OpHost string  `json:"op_host,omitempty"`
@@ -38,7 +41,7 @@ type RegisterSiteRequestParams struct {
 	ProtectionAccessToken string  `json:"protection_access_token,omitempty"`
 }
 
-
+// Register site response https://gluu.org/docs/oxd/3.1.2/api/#register-site
 type RegisterSiteResponseParams struct {
 	OxdId string `json:"oxd_id"`
 }

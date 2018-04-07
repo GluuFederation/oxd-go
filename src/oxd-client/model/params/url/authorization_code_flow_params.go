@@ -1,8 +1,8 @@
-//
 //  Copyright Sagiton
 //  Author: Michał Kępkowski
 //  Date: 02/01/17
 //
+
 package model
 // Deprecated:
 type AuthorizationCodeFlowRequestParams struct {

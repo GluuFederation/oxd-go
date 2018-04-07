@@ -24,7 +24,8 @@ func GetRequest (address string, requestType transport.REQUEST_TYPE, command con
 		address,
 		requestType,
 		"",
-		command}
+		command,
+		true}
 	return request, connectionParam
 }
 
