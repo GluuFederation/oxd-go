@@ -16,17 +16,27 @@ import (
 	"oxd-client-test/utils"
 )
 
-func TestGetLogoutUrl(t *testing.T) {
+
+func TestSocketGetLogoutUrl(t *testing.T) {
+	executeGetLogoutUrlTest(t,utils.GetSocketRequest)
+}
+
+func TestRestGetLogoutUrl(t *testing.T) {
+	executeGetLogoutUrlTest(t,utils.GetRestRequest)
+}
+
+func executeGetLogoutUrlTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
-	codeResponse, oxdId := utils.ExecCodeFlow()
-	requestParams := model.LogoutUrlRequestParams{oxdId, codeResponse.IdToken,
-		conf.TestConfiguration.PostLogoutRedirectUrl, "",""}
-	request := client.BuildOxdRequest(constants.GET_LOGOUT_URI,requestParams)
+	tokensResponse, oxdId := utils.GetTokens(getRequest)
+	requestParams := model.LogoutUrlRequestParams{oxdId,"",tokensResponse.IdToken,
+		conf.TestConfiguration.PostLogoutRedirectUrl,"",""}
+
+	request,connectionParam := getRequest(constants.GET_LOGOUT_URI,requestParams)
 	var response transport.OxdResponse
 	var responseParams model.LogoutUrlResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)

@@ -1,0 +1,86 @@
+<div class="col-md-6" ng-controller="settings as vm">
+    <div class="content">
+        <h3>
+            Settings
+        </h3>
+        <table>
+            <tr>
+                <td>
+                    <label>Oxd host</label>
+                </td>
+                <td>
+                    <input type="radio" ng-model="vm.settings.Type" value="REST" > Rest
+                    <input type="radio" ng-model="vm.settings.Type" value="SOCKET" > Socket
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Oxd host</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.Host">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Oxd https host</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.OxdHttpsHost">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Client Id</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.ClientId">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Client Secret</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.ClientSecret">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Username</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.Username">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Password</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.settings.Password">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Access Token</label>
+                </td>
+                <td>
+                    <label>{{vm.settings.AccessToken}}</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Client Oxd Id</label>
+                </td>
+                <td>
+                    <label>{{vm.settings.ClientOxdId}}</label>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <button ng-click="vm.setSettings()">Save</button>
+        <button ng-click="vm.getSetupClient()">Setup client</button>
+        <button ng-click="vm.getClientToken()">Get client token</button>
+    </div>
+</div>

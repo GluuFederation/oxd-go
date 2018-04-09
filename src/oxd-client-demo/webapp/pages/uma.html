@@ -1,0 +1,102 @@
+<div class="col-md-6" ng-controller="uma as vm">
+    <div class="content">
+        <h3>
+            UMA flow
+        </h3>
+        <table>
+            <tr>
+                <td>
+                    <label>Uma resource</label>
+                </td>
+                <td>
+                    <table class="resource" ng-repeat="resource in vm.uma.Resources">
+                        <tr><td><label>Path</label></td><td><input type="text"  ng-model="resource.Path"></td></tr>
+                        <tr><td class="text-center" colspan="2"><label>Conditions</label></td></tr>
+                        <tr><td colspan="2">
+                            <table class="conditions" ng-repeat="condition in resource.Conditions">
+                                <tr><td><label>Http methods</label></td><td><input type="text" ng-model="condition.HttpMethods"></td></tr>
+                                <tr ng-if="condition.Scopes"><td><label>Scopes</label></td><td><input type="text"  ng-model="condition.Scopes"></td></tr>
+                                <tr ng-if="condition.ScopeExpression.Rule"><td><label>Scope expression</label></td>
+                                    <td><label>Rule</label>
+                                        <pre>{{condition.ScopeExpression.Rule | prettyJSON}}</pre>
+                                        <label>Scopes</label>
+                                        <p ng-repeat="data in condition.ScopeExpression.Data">{{data}}</p>
+                                </tr>
+                                <tr ng-if="condition.TicketScopes"><td><label>Ticket scopes</label></td><td><input type="text"  ng-model="condition.TicketScopes"></td></tr>
+                            </table>
+
+                        </td></tr>
+                    </table>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Resource Oxd Id</label>
+                </td>
+                <td>
+                    {{vm.uma.ResourcesOxdId}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Check Access Path</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.uma.CheckAccessPath">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Check Access Method</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="vm.uma.CheckAccessMethod">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Uma Ticket</label>
+                </td>
+                <td>
+                    {{vm.uma.Ticket}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Uma rpt</label>
+                </td>
+                <td>
+                    {{vm.uma.Rpt}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Uma claims url</label>
+                </td>
+                <td>
+                <a ng-href="{{vm.uma.ClaimsUrl}}">{{vm.uma.ClaimsUrl}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Introspect data</label>
+                </td>
+                <td>
+                    <pre>
+                    {{vm.introspect}}
+                    </pre>
+                </td>
+            </tr>
+
+        </table>
+        <br/>
+        <button ng-click="vm.setSettings()">Save</button>
+        <button ng-click="vm.umaRsProtect()">Protect Resource</button>
+        <button ng-click="vm.umaCheckAccess()">Check access</button>
+        <button ng-click="vm.umaGetRpt()">Get Rpt</button>
+        <button ng-click="vm.umaGetClaimsUrl()">Get Claims Url</button>
+        <button ng-click="vm.umaIntrospectRpt()">Get Rpt introspect data</button>
+    </div>
+</div>

@@ -1,41 +1,55 @@
 title = "config"
-host = "127.0.0.1"
-key = "src/home/kepuss/key.pem"
-cert = "src/home/kepuss/cert.pem"
+host = "oxd.example.com:8099"
+idpHost="https://idp.example.com"
+key = "src/oxd-client-demo/conf/tls/key.pem"
+cert = "src/oxd-client-demo/conf/tls/cert.pem"
+
+
 
 username = "test_user"
 password = "test_user_password"
 
-path="/scim"
+clientId="@!E77D.AB59.5C1D.D971!0001!EAFB.EC9C!0008!8EF1.EB4C.BEF4.BEA1"
+clientSecret="zaq1@WSX"
+clientRegistrationClientUri="https://idp.example.com/identity/"
+type="REST"
+oxdHttpsHost="https://oxd.example.com:8443"
+loglevel = "debug"
 
-[[condition]]
+[uma]
+checkAccessPath="/test"
+checkAccessMethod="GET"
+[[uma.resources]]
+path="/test"
+[[uma.resources.conditions]]
 httpMethods=["GET"]
-scopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
-ticketScopes=["https://scim-test.gluu.org/identity/seam/resource/restv1/scim/vas1"]
+scopes=["http://photoz.example.com/dev/actions/view"]
 
-[[condition]]
+[[uma.resources.conditions]]
 httpMethods=["PUT", "POST"]
-scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/add"]
-ticketScopes=["http://photoz.example.com/dev/actions/add"]
-
-[[condition]]
+[uma.resources.conditions.scopeExpression]
+rule="{\"and\":[{\"or\":[{\"var\":0},{\"var\":1}]},{\"var\":2}]}"
+data=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/add","http://photoz.example.com/dev/actions/internalClient"]
+[[uma.resources.conditions]]
 httpMethods=["DELETE"]
 scopes=["http://photoz.example.com/dev/actions/all","http://photoz.example.com/dev/actions/remove"]
 ticketScopes=["http://photoz.example.com/dev/actions/remove"]
 
 
-loglevel = "debug"
 
-[registerSiteRequestParams]
-opHost = "https://iam310.centroxy.com"
+
+[registerSiteParams]
+
+opHost = "https://idp.example.com"
 authorizationRedirectUri = "https://client.example.com:8080/redirect"
 postLogoutRedirectUri = "https://client.example.com:8080/"
 
-redirectUris = []
+redirectUris = ["https://client.example.com:8080/redirect"]
 responseTypes = ["code"]
 
-clientId = ""
-clientSecret = ""
+
+clientId="@!E77D.AB59.5C1D.D971!0001!EAFB.EC9C!0008!8EF1.EB4C.BEF4.BEA1"
+clientSecret="zaq1@WSX"
 clientName = ""
 clientJwksUri = ""
 clientTokenEndpointAuthMethod = ""
@@ -43,25 +57,13 @@ clientRequestUris  = []
 clientLogoutUri  = []
 clientSectorIdentifierUri = ""
 
-scope = ["openid", "profile", "email", "uma_protection", "uma_authorization"]
+scope = ["openid", "profile", "uma_protection", "uma_authorization"]
 uiLocales  = []
 claimsLocales  = []
+claimsRedirectUri = ["https://client.example.com:8080/claimsRedirect"]
 acrValues = []
-grantType = ["authorization_code", "client_credentials", "uma_ticket"]
+grantType = ["authorization_code"]
 contacts = ["example@example.com"]
-
-
-[authorizationCodeFlowRequestParams]
-clientId = "@!BB85.C095.8C1E.0573!0001!F554.249C!0008!213A.710A"
-
-
-clientSecret = ""
-userId =""
-userSecret =""
-scope = "openid"
-acr = ""
-nonce = "15d3ltbdd65b1o9at1q5gjq3ge"
-authorizationRedirectUri = "https://localhost:8080/redirect"
 
 
 

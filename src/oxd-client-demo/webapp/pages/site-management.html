@@ -1,0 +1,76 @@
+<div class="col-md-6" ng-controller="siteManagement as vm">
+<div class="content">
+        <h3>
+            Site management
+        </h3>
+    <table>
+        <tr>
+            <td>
+                <label>Authorization Redirect Uri</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.AuthorizationRedirectUri">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Post Logout Redirect Uri</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.PostLogoutRedirectUri">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Client Logout Uri</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.ClientLogoutUri">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Redirect Uris</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.RedirectUris">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Scope</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.Scope">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>GrantTypes</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.GrantTypes">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>ResponseTypes</label>
+            </td>
+            <td>
+                <input type="text" ng-model="vm.registerSettings.ResponseTypes">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Site Oxd Id</label>
+            </td>
+            <td>
+                {{vm.registerSettings.OxdId}}
+            </td>
+        </tr>
+    </table>
+    <button ng-click="vm.registerSite()">Register Site</button>
+    <button ng-click="vm.updateSite()">Update Site</button>
+    <button ng-click="vm.removeSite()">Remove Site</button>
+    </div>
+</div>

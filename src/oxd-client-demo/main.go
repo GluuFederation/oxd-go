@@ -6,194 +6,111 @@
 package main
 
 import (
-	
 	"net/http"
-	//"os"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"oxd-client-demo/page"
-	"oxd-client-demo/conf"
 	"log"
 	"github.com/juju/loggo"
 	"github.com/BurntSushi/toml"
 	"oxd-client/utils"
-	"oxd-client-demo/deleteSettings"
 	"strings"
-	"text/template"
-	
+	"oxd-client-demo/conf"
+	"oxd-client-demo/service"
+	"encoding/json"
 )
 
 
 
 var serverConf conf.Configuration
-var session conf.SessionVars
-var globalvariables conf.GlobalVars
-var oxdSettingsInterface interface{}
-func LoadoxdSetting(){
-	
-	ReadoxdSettings,_ := ioutil.ReadFile("src/oxd-client-demo/utils/oxd_config.json")
-	
-	json.Unmarshal(ReadoxdSettings,&oxdSettingsInterface)
-	oxdSettingValues := oxdSettingsInterface.(map[string]interface{})
-
-	globalvariables.Httpresturl = oxdSettingValues["https_rest_url"].(string)
-	globalvariables.ConnectionType = oxdSettingValues["connection_type"].(string)
-	globalvariables.ClientName = oxdSettingValues["client_name"].(string)
-    globalvariables.RedirectUri = oxdSettingValues["authorization_redirect_uri"].(string)
-	globalvariables.LogoutUri = oxdSettingValues["post_logout_redirect_uri"].(string)
-	globalvariables.ClientName = oxdSettingValues["client_name"].(string)
-	globalvariables.Clientid = oxdSettingValues["client_id"].(string)
-	globalvariables.Clientsecret = oxdSettingValues["client_secret"].(string)
-	globalvariables.Ophost = oxdSettingValues["op_host"].(string)
-	globalvariables.Oxdid = oxdSettingValues["oxd_id"].(string)
-	globalvariables.OxdPort = oxdSettingValues["oxd_host_port"].(string)
-	globalvariables.ConnectionType = oxdSettingValues["connection_type"].(string)
-	globalvariables.OxdHost = oxdSettingValues["oxd_host"].(string)
-	
-	ScopeInterfaceType := oxdSettingValues["scope"].([]interface{})
-	ScopeStringArray := make([]string, len(ScopeInterfaceType))
-	for i := range ScopeInterfaceType {
-		ScopeStringArray[i] = ScopeInterfaceType[i].(string)
-	}
-	globalvariables.Scope = ScopeStringArray
-	GrantTypeInterfaceType := oxdSettingValues["grant_types"].([]interface{})
-	GrantTypeStringArray := make([]string, len(GrantTypeInterfaceType))
-	for i := range GrantTypeInterfaceType {
-		GrantTypeStringArray[i] = GrantTypeInterfaceType[i].(string)
-	}
-	globalvariables.GrantType = GrantTypeStringArray
-	globalvariables.Host = fmt.Sprint(globalvariables.OxdHost+":"+globalvariables.OxdPort)
-}
-func GetTemplate(name string) *template.Template{
-	tmpl := template.Must(template.ParseFiles("src/oxd-client-demo/templates/" + name + ".html",
-	))
-	return tmpl
-}
-var isdynamicresponse struct {
-	Response  string            `json:"response"`
-}
 func main() {
-
-	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		page.SetupClientPage(w, r, serverConf, &session,globalvariables)
-		
+	http.HandleFunc("/getAccessToken", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.GetClientTokenPageSite(&serverConf)))
 	})
 
-	http.HandleFunc("/checkregistration", func(w http.ResponseWriter, r *http.Request) {
-	
-	   isdynamic := page.IsDynamicRegistrationPage(w, r, serverConf, &session)
-	   isdynamicresponse.Response = isdynamic
-	   IsdynamicResponseJson, _ := json.Marshal(isdynamicresponse)
-	   w.Write(IsdynamicResponseJson)
-		
+	http.HandleFunc("/registerSite", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.RegisterClientSite(&serverConf)))
 	})
 
-	http.HandleFunc("/loadoxdsettings", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		 w.Header().Set("Content-Type", "application/json")
-		 loadsettingsjson, _ := json.Marshal(globalvariables)
-	     w.Write(loadsettingsjson)
-		
+	http.HandleFunc("/updateSite", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.UpdateClientSite(w,r,&serverConf)))
 	})
 
-
-	http.HandleFunc("/update", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session ,globalvariables)
-		page.UpdateSitePage(w, r, serverConf, &session , ProtectionAccessToken, globalvariables)
+	http.HandleFunc("/setupClient", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.SetupClientPage(w,r,&serverConf)))
 	})
 
-	http.HandleFunc("/authUrl", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.AuthorizationUrlPageSite(w, r, serverConf,session,ProtectionAccessToken,globalvariables)
-		
+	http.HandleFunc("/removeSite", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.RemoveClientSite(&serverConf)))
+	})
+
+	http.HandleFunc("/authorizationUrl", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.GetAuthorizationUrlPage(&serverConf)))
 	})
 
 	http.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		GetUserInfo := page.RedirectPage(w, r, serverConf, &session , ProtectionAccessToken,globalvariables )
-		err := GetTemplate("userinfo").Execute(w,GetUserInfo)
-		if err != nil {
-            panic(err)
-        }
+		service.ReadCode(w,r,&serverConf)
+	})
 
+	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.GetTokenWithCode(&serverConf)))
+	})
+
+	http.HandleFunc("/refresh", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.GetTokenWithRefreshToken(&serverConf)))
 	})
 
 	http.HandleFunc("/userInfo", func(w http.ResponseWriter, r *http.Request) {
-		//page.UserInfoPage(w, r, serverConf, session)
-		
-
-	})
-
-	http.HandleFunc("/authCodeFlow", func(w http.ResponseWriter, r *http.Request) {
-		page.AuthorizationCodeFlowPageSite(w, r, serverConf,session)
-	})
-
-	http.HandleFunc("/authCode", func(w http.ResponseWriter, r *http.Request) {
-		page.AuthorizationCodePageSite(w, r, serverConf, &session)
-	})
-
-	http.HandleFunc("/validate", func(w http.ResponseWriter, r *http.Request) {
-		page.ValidationPageSite(w, r, serverConf, session)
+		data,_ :=json.Marshal(service.GetUserInfo(&serverConf))
+		w.Write(data)
 	})
 
 	http.HandleFunc("/logoutUrl", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.LogoutUrlPageSite(w, r, serverConf, session, ProtectionAccessToken,globalvariables)
+		w.Write([]byte(service.GetLogoutUrl(&serverConf)))
 	})
 
-	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
-		page.LogoutPageSite(w, r)
+	http.HandleFunc("/umaRsProtect", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.UmaRsProtect(&serverConf)))
 	})
 
-	http.HandleFunc("/protectresources", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.ProtectResourcesPage(w, r, serverConf, &session, ProtectionAccessToken,globalvariables)
+	http.HandleFunc("/umaCheckAccess", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.UmaCheckAccess(&serverConf)))
 	})
 
-	http.HandleFunc("/checkaccess", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.CheckAccessPage(w, r, serverConf, &session, ProtectionAccessToken,globalvariables)
+	http.HandleFunc("/umaRpt", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.UmaGetRpt(&serverConf)))
 	})
 
-	http.HandleFunc("/getrpt", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.RpGetRptPage(w, r, serverConf, &session, ProtectionAccessToken,globalvariables)
-	})
-	http.HandleFunc("/getclaims", func(w http.ResponseWriter, r *http.Request) {
-		LoadoxdSetting()
-		ProtectionAccessToken := page.GetClientTokenPageSite(w, r, serverConf,session,globalvariables)
-		page.RpGetClaimsGatheringUrlPage(w, r, serverConf, &session, ProtectionAccessToken,globalvariables)
-	})
-	http.HandleFunc("/deletesettings", func(w http.ResponseWriter, r *http.Request) {
-		jsonio.DeleteoxdSetting()
+	http.HandleFunc("/umaClaimsUrl", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(service.UmaGetClaimsGathering(&serverConf)))
 	})
 
-	http.Handle("/", http.FileServer(http.Dir("src/oxd-client-demo/resources/")))
+	http.HandleFunc("/umaIntrospectRpt", func(w http.ResponseWriter, r *http.Request) {
+		data,_ :=json.Marshal(service.GetUserInfo(&serverConf))
+		w.Write(data)
+	})
+
+	http.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case "GET":
+			service.GetSettingsSite(w, r, serverConf)
+		case "POST":
+			service.PostSettingsSite(w, r, &serverConf)
+		default:
+			return
+		}
+	})
+
+	http.Handle("/", http.FileServer(http.Dir("src/oxd-client-demo/webapp/")))
 	   err := http.ListenAndServeTLS(":8080",serverConf.Cert, serverConf.Key, nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
 		}
-	
 	}
-	
-	
+
 	func init() {
-		LoadoxdSetting()
 		 _, err := toml.DecodeFile("src/oxd-client-demo/conf/main.toml", &serverConf)
 		 utils.CheckError("transport.transport","Config file error newone",err)
-	
+
 		if strings.EqualFold(serverConf.Loglevel, "Debug") {
 			loggo.GetLogger("default").SetLogLevel(loggo.DEBUG)
 		}
 	}
-	
+

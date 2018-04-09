@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>oxd-go demo</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/site.css" />
+    <script type="text/javascript" src="js/lib/jquery-1.10.2.min.js"></script>
+    <script src="js/lib/angular.min.js"></script>
+    <script src="demo.js"></script>
+
+   
+</head>
+<body>
+<header>
+<h2>
+    <a href="https://gluu.org/docs/" title="oxd Docs" class=" md-logo  md-header-nav__button">
+        <img src="img/gluu.jpg" height="24" width="24">
+    </a>
+    Gluu Oxd-server Go Lang plugin demo (<a href="https://gluu.org/docs/oxd/3.1.2/api/">v. 3.1.2</a>)
+</h2>
+</header>
+<div class="container-fluid" ng-app="demo">
+    <div class="row">
+        <div ng-include="'pages/settings.html'"></div>
+        <div ng-include="'pages/site-management.html'"></div>
+    </div>
+    <div class="row">
+        <div ng-include="'pages/open-id-connect.html'"></div>
+        <div ng-include="'pages/uma.html'"></div>
+    </div>
+    <div class="row">
+
+
+    </div>
+</div>
+</body>
+</html>

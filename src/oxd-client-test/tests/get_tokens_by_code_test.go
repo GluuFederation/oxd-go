@@ -13,19 +13,29 @@ import (
 	"oxd-client-test/utils"
 	"oxd-client/model/params/token"
 	"oxd-client/model/transport"
-	"oxd-client-test/conf"
+	//"oxd-client-test/conf"
 )
 
-func TestGetTokensByCode(t *testing.T) {
+func TestSocketGetTokensByCode(t *testing.T) {
+	executeGetTokensByCodeTest(t,utils.GetSocketRequest)
+}
+
+func TestRestGetTokensByCode(t *testing.T) {
+	executeGetTokensByCodeTest(t,utils.GetRestRequest)
+}
+
+func executeGetTokensByCodeTest(t *testing.T,getRequest utils.GetRequest) {
 	//BEFORE
-	codeResponse, codeRequest := utils.ExecCode()
-	requestParams := model.TokensByCodeRequestParams{codeRequest.OxdId,codeResponse.Code,codeRequest.State}
-	request := client.BuildOxdRequest(constants.GET_TOKENS_BY_CODE,requestParams)
+	codeResponses := utils.GetCode(getRequest)
+	requestParams := model.TokensByCodeRequestParams{codeResponses.Get("oxdId"),
+	"",codeResponses.Get("code"), codeResponses.Get("state")}
+
+	request,connectionParam := getRequest(constants.GET_TOKENS_BY_CODE,requestParams)
 	var response transport.OxdResponse
 	var responseParams model.TokensByCodeResponseParams
 
 	//TEST
-	client.Send(request,conf.TestConfiguration.Host,&response)
+	client.Send(request,connectionParam,&response)
 
 	//ASSERT
 	response.GetParams(&responseParams)
